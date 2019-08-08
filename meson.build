@@ -1,7 +1,7 @@
 project('MarinaTK', 'cpp',
   version : '0.0.0',
   license : 'APACHE',
-  cpp_std: 'c17')
+  default_options : ['c_std=c11', 'cpp_std=c++17'])
 add_global_arguments('-W', language : 'cpp')
 add_global_arguments('-Wall', language : 'cpp')
 add_global_arguments('-Wextra', language : 'cpp')
