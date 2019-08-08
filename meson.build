@@ -21,6 +21,7 @@ endif
 
 # Dependencies
 glm_dep = dependency('glm')
+cunit_dep = dependency('cunit')
 
 # Scene Graph Library
 mtk_sources = [
@@ -40,3 +41,7 @@ pkg_mod.generate(libraries : mtk,
 if doxygen.found()
     subdir('doc')
 endif
+
+# Test
+sceneGraphTest = executable('prog', 'tests/testSceneGraph.cpp', dependencies: [cunit_dep, glm_dep], include_directories : incdir, link_with : mtk)
+test('Scene Graph Test', sceneGraphTest)
