@@ -15,7 +15,7 @@
  *
  */ 
 
-#include "sceneGraph.hpp"
+#include <sceneGraph.hpp>
 
 namespace MTK {
 

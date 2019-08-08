@@ -14,35 +14,19 @@
  *  limitations under the License.
  *
  */
-   
-#pragma once
 
-#include <algorithm>
+/*!
+ * \mainpage The Marina Tool Kit - Scene Graph Library
+ *
+ * \section intro Introduction
+ *
+ * This is a GUI / general graphics toolkit designed for
+ * Marina Desktop Environment, and for a unnamed graphics library.
+ *
+ * \section sched Project schedule
+ *
+ * There is no real estimate on when this will be finished.
+ */
 
-#include <glm/glm.hpp>
-
-namespace MTK {
-
-    using namespace glm;
-
-    struct Box2D
-    {
-        // These conditions must be met: x0 < x1 && y0 < y1
-        vec2 p0, p1;
-
-        // Return whether the box is in correct condition, and correct the conditions
-        bool check();
-        // Return the area of the box
-        float area();
-    };
-
-    struct BBox2D
-    {
-        Box2D box;
-
-        BBox2D join(BBox2D& other);
-        bool collide(BBox2D& other);
-        BBox2D clip(BBox2D& other);
-    };
-
-}
+#include "geometry.hpp"
+#include "sceneGraph.hpp"

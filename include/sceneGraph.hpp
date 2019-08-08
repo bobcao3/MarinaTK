@@ -21,27 +21,51 @@
 
 namespace MTK {
 
-    class SceneNode
+    //! An abstract Scene Node.
+    class SceneNodeAbstract
     {
     public:
+        //! Get the bounding box of this node
         virtual const BBox2D& getBBox() = 0;
+        
+        //! Set the bounding box of this node
         virtual void setBBox(BBox2D& bbox) = 0;
+        
+        //! Get the transformation matrix (3x3 as it's 2D) of this node
         virtual const mat3x3 getTransformation() = 0;
 
-        virtual ~SceneNode() = 0;
+        virtual ~SceneNodeAbstract() = 0;
     };
 
-    class SceneNodeRect
+    //! An ordinary rectangular scene node with defined bounding box.
+    class SceneNode : public SceneNodeAbstract
     {
+    private:
+        BBox2D bbox;
 
+    public:
+        //! Get the bounding box of this node
+        const BBox2D& getBBox();
+        
+        //! Set the bounding box of this node
+        void setBBox(BBox2D& bbox);
+        
+        //! Get the transformation matrix (3x3 as it's 2D) of this node
+        const mat3x3 getTransformation();
+
+        SceneNode();
+        
+        SceneNode(BBox2D& bbox);
     };
 
+    //! The 2D Scene Graph class.
     class SceneGraph
     {
     private:
 
     public:
         SceneGraph();
+        
         ~SceneGraph();
     };
     
