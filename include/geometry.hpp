@@ -39,6 +39,9 @@ namespace MTK {
 
         //! Return the area of the box
         float area();
+
+        auto operator==(const Box2D& other) { return p0 == other.p0 && p1 == other.p1; };
+        auto operator!=(const Box2D& other) { return !(*this == other); };
     };
 
     //! 2D Bounding Box

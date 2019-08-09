@@ -36,6 +36,7 @@ void testBox2D() {
     CU_ASSERT_DOUBLE_EQUAL(box1.p0.x, 1.5, 1e-7);
     CU_ASSERT_DOUBLE_EQUAL(box1.p1.x, 1.5, 1e-7);
     CU_ASSERT_DOUBLE_EQUAL(box1.area(), 0.0, 1e-7);
+    CU_ASSERT_TRUE(box1.check());
 
     Box2D box2 = {{0.0, 5.0}, {1.0, 3.0}};
 
@@ -43,10 +44,30 @@ void testBox2D() {
     CU_ASSERT_DOUBLE_EQUAL(box2.p0.y, 4.0, 1e-7);
     CU_ASSERT_DOUBLE_EQUAL(box2.p1.y, 4.0, 1e-7);
     CU_ASSERT_DOUBLE_EQUAL(box2.area(), 0.0, 1e-7);
+    CU_ASSERT_TRUE(box2.check());
 }
 
 void testBBox2D() {
+    BBox2D bbox0 = { {{0.0, 0.0}, {1.0, 3.0}} };
+    BBox2D bbox1 = { {{0.5, 0.5}, {2.0, 2.0}} };
+    BBox2D bbox2 = { {{6.0, 6.0}, {8.0, 9.0}} };
 
+    CU_ASSERT_TRUE(bbox0.collide(bbox1));
+    CU_ASSERT_TRUE(bbox1.collide(bbox0));
+
+    CU_ASSERT_FALSE(bbox0.collide(bbox2));
+    CU_ASSERT_FALSE(bbox1.collide(bbox2));
+    CU_ASSERT_FALSE(bbox2.collide(bbox0));
+
+    BBox2D bbox01 = bbox0.join(bbox1);
+    BBox2D bbox10 = bbox1.join(bbox0);
+    CU_ASSERT(bbox01.box == bbox10.box);
+
+    CU_ASSERT(bbox01.clip(bbox1).box == bbox1.box);
+
+    BBox2D bboxIntersect = { {{0.5, 0.5}, {1.0, 2.0}} };
+
+    CU_ASSERT(bbox0.clip(bbox1).box == bboxIntersect.box);
 }
 
 int main() {
@@ -58,15 +79,15 @@ int main() {
 
     /* add a suite to the registry */
     pSuite = CU_add_suite("Test Geometry & SceneGraph", nullptr, nullptr);
-    if (NULL == pSuite) {
+    if (nullptr == pSuite) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
    /* add the tests to the suite */
    if (
-       (NULL == CU_add_test(pSuite, "test of Box", testBox2D)) ||
-       (NULL == CU_add_test(pSuite, "test of BBox", testBBox2D))
+       (nullptr == CU_add_test(pSuite, "test of Box", testBox2D)) ||
+       (nullptr == CU_add_test(pSuite, "test of BBox", testBBox2D))
     ){
       CU_cleanup_registry();
       return CU_get_error();

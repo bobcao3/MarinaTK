@@ -51,8 +51,8 @@ namespace MTK {
     }
 
     bool BBox2D::collide(BBox2D& other) {
-        return (box.p0.x < other.box.p1.x || box.p1.x > other.box.p0.x)
-            && (box.p0.y < other.box.p1.y || box.p1.y > other.box.p0.y);
+        return (box.p0.x < other.box.p1.x && box.p1.x > other.box.p0.x)
+            && (box.p0.y < other.box.p1.y && box.p1.y > other.box.p0.y);
     }
 
     BBox2D BBox2D::clip(BBox2D& other) {
