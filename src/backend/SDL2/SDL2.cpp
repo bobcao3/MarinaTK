@@ -1,9 +1,11 @@
-#include <renderer.hpp>
-#include <renderer_backend/SDL2_renderer.hpp>
+#include <backend.hpp>
+#include <backend/SDL2.hpp>
 
 #include <iostream>
 
-SDL2_Renderer::SDL2_Renderer() {
+namespace MTK::Backend {
+
+SDL2::SDL2() {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
     exit(-1);
@@ -30,13 +32,13 @@ SDL2_Renderer::SDL2_Renderer() {
   SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
 }
 
-SDL2_Renderer::~SDL2_Renderer() {
+SDL2::~SDL2() {
   SDL_DestroyWindow(window);
   SDL_Quit();
 }
 
 // Drawing funcitons
-void SDL2_Renderer::fillRect(float x, float y, float width, float height) {
+void SDL2::fillRect(float x, float y, float width, float height) {
   SDL_Rect r;
   r.x = x;
   r.y = y;
@@ -46,7 +48,7 @@ void SDL2_Renderer::fillRect(float x, float y, float width, float height) {
   SDL_RenderFillRect(ren, &r);
 }
 
-void SDL2_Renderer::strokeRect(float x, float y, float width, float height) {
+void SDL2::strokeRect(float x, float y, float width, float height) {
   SDL_Rect r;
   r.x = x;
   r.y = y;
@@ -56,18 +58,19 @@ void SDL2_Renderer::strokeRect(float x, float y, float width, float height) {
   SDL_RenderDrawRect(ren, &r);
 }
 
-void SDL2_Renderer::clearRect(float x, float y, float width, float height) {
+void SDL2::clearRect(float x, float y, float width, float height) {
   SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
   fillRect(x, y, width, height);
   SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
 }
 
-void SDL2_Renderer::presentBuffer() { SDL_RenderPresent(ren); }
+void SDL2::presentBuffer() { SDL_RenderPresent(ren); }
 
-void SDL2_Renderer::presentRegion([[maybe_unused]] float x,
-                                  [[maybe_unused]] float y,
-                                  [[maybe_unused]] float width,
-                                  [[maybe_unused]] float height) {
+void SDL2::presentRegion([[maybe_unused]] float x, [[maybe_unused]] float y,
+                         [[maybe_unused]] float width,
+                         [[maybe_unused]] float height) {
   // SDL2 does not have partial update
   presentBuffer();
+}
+
 }

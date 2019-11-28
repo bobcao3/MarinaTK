@@ -14,73 +14,69 @@
  *  limitations under the License.
  *
  */
-   
+
 #pragma once
 
 #include "geometry.hpp"
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
-namespace MTK {
+namespace MTK::SceneGraph {
 
-    //! An abstract Scene Node.
-    class SceneNodeAbstract
-    {
-    public:
-        //! Get the bounding box of this node
-        virtual const BBox2D& getBBox() = 0;
-        
-        //! Set the bounding box of this node
-        virtual void setBBox(BBox2D& bbox) = 0;
-        
-        //! Get the transformation matrix (3x3 as it's 2D) of this node
-        virtual const mat3x3 getTransformation() = 0;
+//! An abstract Scene Node.
+class SceneNodeAbstract {
+public:
+  //! Get the bounding box of this node
+  virtual const BBox2D &getBBox() = 0;
 
-        virtual ~SceneNodeAbstract() {};
+  //! Set the bounding box of this node
+  virtual void setBBox(BBox2D &bbox) = 0;
 
-        //! Get the children of this node
-        virtual std::vector<std::unique_ptr<SceneNodeAbstract>>& getChildren() = 0;
-    };
+  //! Get the transformation matrix (3x3 as it's 2D) of this node
+  virtual const mat3x3 getTransformation() = 0;
 
-    //! An ordinary rectangular scene node with defined bounding box.
-    class SceneNode : public SceneNodeAbstract
-    {
-    private:
-        BBox2D bbox;
-        mat3x3 transformation;
-        std::vector<std::unique_ptr<SceneNodeAbstract>> children;
+  virtual ~SceneNodeAbstract(){};
 
-    public:
-        //! Get the bounding box of this node
-        const BBox2D& getBBox();
-        
-        //! Set the bounding box of this node
-        void setBBox(BBox2D& bbox);
-        
-        //! Get the transformation matrix (3x3 as it's 2D) of this node
-        const mat3x3 getTransformation();
+  //! Get the children of this node
+  virtual std::vector<std::unique_ptr<SceneNodeAbstract>> &getChildren() = 0;
+};
 
-        //! Get the children of this node
-        std::vector<std::unique_ptr<SceneNodeAbstract>>& getChildren();
+//! An ordinary rectangular scene node with defined bounding box.
+class SceneNode : public SceneNodeAbstract {
+private:
+  BBox2D bbox;
+  mat3x3 transformation;
+  std::vector<std::unique_ptr<SceneNodeAbstract>> children;
 
-        SceneNode();
-        
-        SceneNode(BBox2D& bbox);
-    };
+public:
+  //! Get the bounding box of this node
+  const BBox2D &getBBox();
 
-    //! The 2D Scene Graph class.
-    class SceneGraph
-    {
-    private:
-        SceneNode root;
+  //! Set the bounding box of this node
+  void setBBox(BBox2D &bbox);
 
-    public:
-        SceneGraph();
-        
-        ~SceneGraph();
-    };
-    
+  //! Get the transformation matrix (3x3 as it's 2D) of this node
+  const mat3x3 getTransformation();
 
-}
+  //! Get the children of this node
+  std::vector<std::unique_ptr<SceneNodeAbstract>> &getChildren();
+
+  SceneNode();
+
+  SceneNode(BBox2D &bbox);
+};
+
+//! The 2D Scene Graph class.
+class SceneGraph {
+private:
+  SceneNode root;
+
+public:
+  SceneGraph();
+
+  ~SceneGraph();
+};
+
+} // namespace MTK::SceneGraph

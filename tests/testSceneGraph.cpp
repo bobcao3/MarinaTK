@@ -22,6 +22,7 @@
 #include <glm/glm.hpp>
 
 using namespace MTK;
+using namespace MTK::SceneGraph;
 using namespace glm;
 
 void testBox2D() {

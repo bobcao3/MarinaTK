@@ -52,7 +52,7 @@ public:
        std::vector<Node *> children, LayoutInterface *renderer)
       : size{size}, padding{padding},
         major_axis{major_axis}, children{children}, renderer{renderer} {}
-  
+
   virtual ~Node() {}
 
   virtual glm::vec2 layout(Node *root, float x, float y, float max_x,
@@ -81,4 +81,4 @@ public:
                    float max_y) const;
 };
 
-}
+} // namespace MTK::Layout

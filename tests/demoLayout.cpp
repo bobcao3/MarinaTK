@@ -1,12 +1,12 @@
 #include <layout.hpp>
 #include <mtk.hpp>
-#include <renderer_backend/SDL2_renderer.hpp>
+#include <backend/SDL2.hpp>
 
 #include <iostream>
 
 using namespace MTK;
 
-SDL2_Renderer *r;
+Backend::SDL2 *r;
 
 class LayoutVisualizer : public Layout::LayoutInterface {
 public:
@@ -14,7 +14,7 @@ public:
 };
 
 int main() {
-  r = new SDL2_Renderer();
+  r = new Backend::SDL2();
 
   LayoutVisualizer rd;
 

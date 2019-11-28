@@ -30,4 +30,14 @@
 
 #include "geometry.hpp"
 #include "sceneGraph.hpp"
-#include "renderer.hpp"
+#include "backend.hpp"
+
+namespace MTK {
+
+const int VERSION_MAJOR = 0;
+const int VERSION_MINOR = 0;
+const int VERSION_PATCH = 1;
+
+const int VERSION = 000001;
+
+}

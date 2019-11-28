@@ -13,35 +13,26 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
- */ 
+ */
 
 #include <sceneGraph.hpp>
 
 using namespace std;
 
-namespace MTK {
+namespace MTK::SceneGraph {
 
-    SceneNode::SceneNode() {
-        this->transformation = mat3x3(1.0);
-    }
+SceneNode::SceneNode() { this->transformation = mat3x3(1.0); }
 
-    SceneNode::SceneNode(BBox2D& bbox) {
-        this->setBBox(bbox);
-    }
+SceneNode::SceneNode(BBox2D &bbox) { this->setBBox(bbox); }
 
-    void SceneNode::setBBox(BBox2D& bbox) {
-        this->bbox = bbox;
-    }
+void SceneNode::setBBox(BBox2D &bbox) { this->bbox = bbox; }
 
-    const BBox2D& SceneNode::getBBox() {
-        return this->bbox;
-    }
+const BBox2D &SceneNode::getBBox() { return this->bbox; }
 
-    const mat3x3 SceneNode::getTransformation() {
-        return this->transformation;
-    }
+const mat3x3 SceneNode::getTransformation() { return this->transformation; }
 
-    vector<unique_ptr<SceneNodeAbstract>>& SceneNode::getChildren() {
-        return this->children;
-    }
+vector<unique_ptr<SceneNodeAbstract>> &SceneNode::getChildren() {
+  return this->children;
 }
+
+} // namespace MTK::SceneGraph

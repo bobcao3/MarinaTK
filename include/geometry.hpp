@@ -14,49 +14,49 @@
  *  limitations under the License.
  *
  */
-   
+
 #pragma once
 
 #include <algorithm>
 
 #include <glm/glm.hpp>
 
-namespace MTK {
+namespace MTK::SceneGraph {
 
-    using namespace glm;
+using namespace glm;
 
-    //! Basic 2D Box
-    struct Box2D
-    {
-        vec2 p0, p1;
+//! Basic 2D Box
+struct Box2D {
+  vec2 p0, p1;
 
-        /*!
-         * Return whether the box is in correct condition, and correct the conditions
-         * Conditions:
-         *   x0 < x1 && y0 < y1
-         */
-        bool check();
+  /*!
+   * Return whether the box is in correct condition, and correct the conditions
+   * Conditions:
+   *   x0 < x1 && y0 < y1
+   */
+  bool check();
 
-        //! Return the area of the box
-        float area();
+  //! Return the area of the box
+  float area();
 
-        auto operator==(const Box2D& other) { return p0 == other.p0 && p1 == other.p1; };
-        auto operator!=(const Box2D& other) { return !(*this == other); };
-    };
+  auto operator==(const Box2D &other) {
+    return p0 == other.p0 && p1 == other.p1;
+  };
+  auto operator!=(const Box2D &other) { return !(*this == other); };
+};
 
-    //! 2D Bounding Box
-    struct BBox2D
-    {
-        Box2D box;
+//! 2D Bounding Box
+struct BBox2D {
+  Box2D box;
 
-        //! Join the bounding box to another one, return the new one
-        BBox2D join(BBox2D& other);
+  //! Join the bounding box to another one, return the new one
+  BBox2D join(BBox2D &other);
 
-        //! Test if two bounding boxes are colliding
-        bool collide(BBox2D& other);
+  //! Test if two bounding boxes are colliding
+  bool collide(BBox2D &other);
 
-        //! Clip the bounding box with another, return the new one
-        BBox2D clip(BBox2D& other);
-    };
+  //! Clip the bounding box with another, return the new one
+  BBox2D clip(BBox2D &other);
+};
 
-}
+} // namespace MTK

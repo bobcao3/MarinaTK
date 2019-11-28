@@ -17,51 +17,45 @@
 
 #include <geometry.hpp>
 
-namespace MTK {
+namespace MTK::SceneGraph {
 
-    bool Box2D::check() {
-        bool result = true;
-        if (p0.x > p1.x) {
-            float average = (p0.x + p1.x) * 0.5;
-            p0.x = average;
-            p1.x = average;
-            result &= false;
-        }
-        if (p0.y > p1.y) {
-            float average = (p0.y + p1.y) * 0.5;
-            p0.y = average;
-            p1.y = average;
-            result &= false;
-        }
-        return result;
-    }
-
-    float Box2D::area() {
-        vec2 size = p1 - p0;
-        return size.x * size.y;
-    }
-
-    BBox2D BBox2D::join(BBox2D& other) {
-        BBox2D result = {{
-            min(box.p0, other.box.p0),
-            max(box.p1, other.box.p1)
-        }};
-        result.box.check();
-        return result;
-    }
-
-    bool BBox2D::collide(BBox2D& other) {
-        return (box.p0.x < other.box.p1.x && box.p1.x > other.box.p0.x)
-            && (box.p0.y < other.box.p1.y && box.p1.y > other.box.p0.y);
-    }
-
-    BBox2D BBox2D::clip(BBox2D& other) {
-        BBox2D result = {{
-            max(box.p0, other.box.p0),
-            min(box.p1, other.box.p1)
-        }};
-        result.box.check();
-        return result;
-    }
-
+bool Box2D::check() {
+  bool result = true;
+  if (p0.x > p1.x) {
+    float average = (p0.x + p1.x) * 0.5;
+    p0.x = average;
+    p1.x = average;
+    result &= false;
+  }
+  if (p0.y > p1.y) {
+    float average = (p0.y + p1.y) * 0.5;
+    p0.y = average;
+    p1.y = average;
+    result &= false;
+  }
+  return result;
 }
+
+float Box2D::area() {
+  vec2 size = p1 - p0;
+  return size.x * size.y;
+}
+
+BBox2D BBox2D::join(BBox2D &other) {
+  BBox2D result = {{min(box.p0, other.box.p0), max(box.p1, other.box.p1)}};
+  result.box.check();
+  return result;
+}
+
+bool BBox2D::collide(BBox2D &other) {
+  return (box.p0.x < other.box.p1.x && box.p1.x > other.box.p0.x) &&
+         (box.p0.y < other.box.p1.y && box.p1.y > other.box.p0.y);
+}
+
+BBox2D BBox2D::clip(BBox2D &other) {
+  BBox2D result = {{max(box.p0, other.box.p0), min(box.p1, other.box.p1)}};
+  result.box.check();
+  return result;
+}
+
+} // namespace MTK::SceneGraph

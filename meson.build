@@ -30,7 +30,7 @@ mtk_sources = [
     'src/sceneGraph/sceneGraph.cpp',
     'src/sceneGraph/sceneNode.cpp',
     'src/sceneGraph/geometry.cpp',
-    'src/renderer/SDL2_renderer.cpp',
+    'src/backend/SDL2/SDL2.cpp',
     'src/ui/layout.cpp'
 ]
 incdir = include_directories('include')

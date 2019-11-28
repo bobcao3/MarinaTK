@@ -13,16 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
- */ 
+ */
 
 #include <sceneGraph.hpp>
 
-namespace MTK {
+namespace MTK::SceneGraph {
 
-    SceneGraph::SceneGraph() {
-    }
+SceneGraph::SceneGraph() {}
 
-    SceneGraph::~SceneGraph() {
-    }
+SceneGraph::~SceneGraph() {}
 
-}
+} // namespace MTK::SceneGraph
