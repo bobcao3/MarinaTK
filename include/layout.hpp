@@ -32,6 +32,7 @@ struct Extent4 {
 class LayoutInterface {
 public:
   virtual void layout(float x, float y, float w, float h) = 0;
+  virtual ~LayoutInterface() {}
 };
 
 class Node {
@@ -39,9 +40,10 @@ public:
   Extent2 size;
   Extent4 padding;
   Axis major_axis;
-  LayoutInterface *renderer;
 
   std::vector<Node *> children;
+
+  LayoutInterface *renderer;
 
   ComputedBox getComputedSize(float dpi, float max_x = 0.0,
                               float max_y = 0.0) const;
@@ -50,6 +52,8 @@ public:
        std::vector<Node *> children, LayoutInterface *renderer)
       : size{size}, padding{padding},
         major_axis{major_axis}, children{children}, renderer{renderer} {}
+  
+  virtual ~Node() {}
 
   virtual glm::vec2 layout(Node *root, float x, float y, float max_x,
                            float max_y) const = 0;

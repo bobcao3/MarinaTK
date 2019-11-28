@@ -10,4 +10,6 @@ public:
 
   virtual void presentBuffer() = 0;
   virtual void presentRegion(float x, float y, float width, float height) = 0;
+
+  virtual ~Renderer() {}
 };

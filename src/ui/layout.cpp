@@ -73,8 +73,8 @@ glm::vec2 Grid::layout(Node *root, float x, float y, float max_x,
         width_limit = child_size;
         height_limit = box.h - box.pad_top - box.pad_bottom;
       }
-      glm::vec2 r = child->layout(child, x + box.pad_left, y + box.pad_top,
-                                  width_limit, height_limit);
+      child->layout(child, x + box.pad_left, y + box.pad_top, width_limit,
+                    height_limit);
       if (root->major_axis == Y) {
         y += child_spacing;
       } else {
@@ -86,4 +86,4 @@ glm::vec2 Grid::layout(Node *root, float x, float y, float max_x,
   return glm::vec2(box.w, box.h);
 }
 
-}
+} // namespace MTK::Layout
