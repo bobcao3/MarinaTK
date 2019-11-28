@@ -21,7 +21,7 @@
  * \section intro Introduction
  *
  * This is a GUI / general graphics toolkit designed for
- * Marina Desktop Environment, and for a unnamed graphics library.
+ * Marina Desktop Environment
  *
  * \section sched Project schedule
  *
@@ -29,9 +29,9 @@
  */
 
 #include "geometry.hpp"
-#include "sceneGraph.hpp"
 #include "backend.hpp"
 
+//! The namespace for the toolkit.
 namespace MTK {
 
 const int VERSION_MAJOR = 0;

@@ -30,8 +30,6 @@ mtk_dep = [glm_dep, thread_dep, sdl2_ttf_dep, sdl2_dep]
 
 # The Library
 mtk_sources = [
-    'src/sceneGraph/sceneGraph.cpp',
-    'src/sceneGraph/sceneNode.cpp',
     'src/sceneGraph/geometry.cpp',
     'src/backend/SDL2/SDL2.cpp',
     'src/backend/SDL2/SDL_FontCache/SDL_FontCache.c',
@@ -52,8 +50,8 @@ if doxygen.found()
 endif
 
 # Test
-sceneGraphTest = executable('sceneGraphTest', 'tests/testSceneGraph.cpp', dependencies: [cunit_dep, glm_dep], include_directories : incdir, link_with : mtk)
-test('Scene Graph Test', sceneGraphTest)
+testGeometry = executable('testGeometry', 'tests/testGeometry.cpp', dependencies: [cunit_dep, glm_dep], include_directories : incdir, link_with : mtk)
+test('GeometryTest', testGeometry)
 
 # Demo
 demoSDL2Renderer = executable('demoSDL2Renderer', 'tests/demoSDL2Renderer.cpp', dependencies: mtk_dep, include_directories : incdir, link_with : mtk)

@@ -16,7 +16,6 @@
  */ 
 
 #include <geometry.hpp>
-#include <sceneGraph.hpp>
 
 #include "CUnit/Basic.h"
 #include <glm/glm.hpp>

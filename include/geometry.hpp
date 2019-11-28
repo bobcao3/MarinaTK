@@ -21,7 +21,10 @@
 
 #include <glm/glm.hpp>
 
-namespace MTK::SceneGraph {
+namespace MTK {
+
+//! Contains scene graph abstractions
+namespace SceneGraph {
 
 using namespace glm;
 
@@ -58,5 +61,7 @@ struct BBox2D {
   //! Clip the bounding box with another, return the new one
   BBox2D clip(BBox2D &other);
 };
+
+}
 
 } // namespace MTK

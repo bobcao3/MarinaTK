@@ -6,12 +6,14 @@ doxyfile = configure_file(input: 'Doxyfile.in',
                           configuration: cdata,
                           install: false)
 
-datadir = join_paths(get_option('datadir'), 'doc', 'sceneGraph')
+doxyfile_mcss = configure_file(input: 'Doxyfile-mcss', output: 'Doxyfile-mcss', copy: true, install: false)
 
-html_target = custom_target('marina-tool-kit-docs',
-                            input: doxyfile,
+doxygen_py = join_paths(meson.source_root(), './doc/m.css/documentation/doxygen.py')
+
+xml_target = custom_target('marina-tool-kit-docs',
+                            input: doxyfile_mcss,
                             output: 'html',
-                            command: [doxygen, doxyfile],
+                            command: [doxygen_py, doxyfile_mcss],
                             install: true,
-                            install_dir: datadir)
+                            install_dir: get_option('datadir'))
 
