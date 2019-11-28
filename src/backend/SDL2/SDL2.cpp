@@ -50,6 +50,12 @@ SDL2::~SDL2() {
   SDL_Quit();
 }
 
+glm::vec2 SDL2::getSize() {
+  int x, y;
+  SDL_GetWindowSize(window, &x, &y);
+  return glm::vec2(x, y);
+}
+
 // Drawing funcitons
 void SDL2::fillRect(float x, float y, float width, float height) {
   SDL_Rect r;

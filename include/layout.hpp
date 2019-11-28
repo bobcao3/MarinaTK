@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -7,6 +8,8 @@ namespace MTK {
 
 //! Contains Layout functionality and abstractions
 namespace Layout {
+
+const float standardDPI = 96.0f;
 
 //! Enum for device native / independent units
 enum Unit { Pixel, NativePixel, Percent };
@@ -24,6 +27,10 @@ struct Length {
   //! Get the device native (pixel) length, given a DPI and a maximum limit.
   /*! The maximum is used to calculate percentage (relative) sizes */
   float getComputedValue(float dpi, float max = 0.0) const;
+
+  //! Construct a length from native pixel length
+  Length(float value, Unit unit) : value{value}, unit{unit} {};
+  Length(float dpi, float value);
 };
 
 //! Strut to store computed Box information
@@ -47,17 +54,7 @@ struct Extent4 {
 class Node;
 
 //! The interface to use the layout functionality for other parts of MTK.
-class LayoutInterface {
-public:
-  //! The callback for the layout function.
-  /*! All the inputs are in device native pixels,
-   *  The `node` pointer specifies which node called this layout interface.
-   *  Usually widgets uses this interface to get the rendering bound / location
-   *  of the widget.
-   */ 
-  virtual void layout(Node* node, float x, float y, float w, float h) = 0;
-  virtual ~LayoutInterface() {}
-};
+typedef std::function<void(float, float, float, float)> layoutCallback;
 
 //! Base class for a Layout Tree Node
 class Node {
@@ -73,14 +70,14 @@ public:
   std::vector<Node *> children;
 
   //! The LayoutInterface that will be called for this node
-  LayoutInterface *interface;
+  layoutCallback interface;
 
   //! Get the computed size of the Box of this node
   ComputedBox getComputedSize(float dpi, float max_x = 0.0,
                               float max_y = 0.0) const;
 
   Node(Extent2 size, Extent4 padding, Axis major_axis,
-       std::vector<Node *> children, LayoutInterface *interface)
+       std::vector<Node *> children, layoutCallback interface)
       : size{size}, padding{padding},
         major_axis{major_axis}, children{children}, interface{interface} {}
 
@@ -96,7 +93,7 @@ public:
 class Box : public Node {
 public:
   Box(Extent2 size, Extent4 padding, Axis major_axis,
-      std::vector<Node *> children, LayoutInterface *interface)
+      std::vector<Node *> children, layoutCallback interface)
       : Node(size, padding, major_axis, children, interface) {}
 
   glm::vec2 layout(Node *root, float x, float y, float max_x,
@@ -110,7 +107,7 @@ public:
   Length gap;
 
   Grid(Extent2 size, Extent4 padding, Axis major_axis, Length gap,
-       std::vector<Node *> children, LayoutInterface *interface)
+       std::vector<Node *> children, layoutCallback interface)
       : Node(size, padding, major_axis, children, interface), gap{gap} {}
 
   glm::vec2 layout(Node *root, float x, float y, float max_x,
@@ -121,13 +118,13 @@ public:
 class Layered : public Node {
 public:
   Layered(Extent2 size, Extent4 padding, Axis major_axis,
-          std::vector<Node *> children, LayoutInterface *interface)
+          std::vector<Node *> children, layoutCallback interface)
       : Node(size, padding, major_axis, children, interface) {}
 
   glm::vec2 layout(Node *root, float x, float y, float max_x,
                    float max_y) const;
 };
 
-}
+} // namespace Layout
 
-} // namespace MTK::Layout
+} // namespace MTK

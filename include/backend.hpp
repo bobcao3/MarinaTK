@@ -2,6 +2,8 @@
 
 #include "geometry.hpp"
 
+#include <functional>
+
 namespace MTK {
 
 //! Contains backend abstrations.
@@ -40,7 +42,7 @@ struct EventPointer : public Event {
 };
 
 //! Backend Event Callback Type
-typedef void (*eventCallback)(Event *);
+typedef std::function<void(Event*)> eventCallback;
 
 //! Platform Backend Abstraction
 /*! Each instance represents a native platform "window" or "view", with its
@@ -49,6 +51,9 @@ typedef void (*eventCallback)(Event *);
  */
 class Backend {
 public:
+  //! Get the size of the window
+  virtual glm::vec2 getSize() = 0;
+
   //! Draw a filled rectangle
   virtual void fillRect(float x, float y, float width, float height) = 0;
   //! Draw a rectangle outline. The width of outline is always 1 native pixel

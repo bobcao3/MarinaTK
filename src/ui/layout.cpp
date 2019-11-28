@@ -2,8 +2,6 @@
 
 namespace MTK::Layout {
 
-const float standardDPI = 96.0;
-
 float Length::getComputedValue(float dpi, float max) const {
   if (unit == NativePixel)
     return value;
@@ -13,6 +11,11 @@ float Length::getComputedValue(float dpi, float max) const {
     return value / 100 * max;
 
   return 0.0;
+}
+
+Length::Length(float dpi, float value) {
+  this->value = value / dpi * standardDPI;
+  this->unit = Pixel;
 }
 
 ComputedBox Node::getComputedSize(float dpi, float max_x, float max_y) const {
@@ -29,7 +32,7 @@ glm::vec2 Box::layout(Node *root, float x, float y, float max_x,
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
-    interface->layout((Node *)this, x, y, box.w, box.h);
+    interface(x, y, box.w, box.h);
 
   for (Node *child : root->children) {
     glm::vec2 r = child->layout(child, x + box.pad_left, y + box.pad_top,
@@ -50,7 +53,7 @@ glm::vec2 Layered::layout(Node *root, float x, float y, float max_x,
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
-    interface->layout((Node *)this, x, y, box.w, box.h);
+    interface(x, y, box.w, box.h);
 
   for (Node *child : root->children) {
     child->layout(child, x + box.pad_left, y + box.pad_top,
@@ -66,7 +69,7 @@ glm::vec2 Grid::layout(Node *root, float x, float y, float max_x,
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
-    interface->layout((Node *)this, x, y, box.w, box.h);
+    interface(x, y, box.w, box.h);
 
   if (root->children.size() > 0) {
     float inner_space;

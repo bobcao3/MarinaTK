@@ -37,6 +37,8 @@ public:
   SDL2();
   ~SDL2();
 
+  glm::vec2 getSize();
+
   void fillRect(float x, float y, float width, float height);
   void strokeRect(float x, float y, float width, float height);
   void clearRect(float x, float y, float width, float height);
