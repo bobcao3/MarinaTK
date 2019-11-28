@@ -27,15 +27,14 @@ ComputedBox Node::getComputedSize(float dpi, float max_x, float max_y) const {
           padding.bottom.getComputedValue(dpi, max_y)};
 }
 
-glm::vec2 Box::layout(Node *root, float x, float y, float max_x,
-                      float max_y) const {
+glm::vec2 Box::layout(float x, float y, float max_x, float max_y) const {
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
     interface(x, y, box.w, box.h);
 
-  for (Node *child : root->children) {
-    glm::vec2 r = child->layout(child, x + box.pad_left, y + box.pad_top,
+  for (Node *child : children) {
+    glm::vec2 r = child->layout(x + box.pad_left, y + box.pad_top,
                                 box.w - box.pad_left - box.pad_right,
                                 box.h - box.pad_top - box.pad_bottom);
     if (root->major_axis == Y) {
@@ -48,15 +47,14 @@ glm::vec2 Box::layout(Node *root, float x, float y, float max_x,
   return glm::vec2(box.w, box.h);
 }
 
-glm::vec2 Layered::layout(Node *root, float x, float y, float max_x,
-                          float max_y) const {
+glm::vec2 Layered::layout(float x, float y, float max_x, float max_y) const {
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
     interface(x, y, box.w, box.h);
 
-  for (Node *child : root->children) {
-    child->layout(child, x + box.pad_left, y + box.pad_top,
+  for (Node *child : children) {
+    child->layout(x + box.pad_left, y + box.pad_top,
                   box.w - box.pad_left - box.pad_right,
                   box.h - box.pad_top - box.pad_bottom);
   }
@@ -64,34 +62,32 @@ glm::vec2 Layered::layout(Node *root, float x, float y, float max_x,
   return glm::vec2(box.w, box.h);
 }
 
-glm::vec2 Grid::layout(Node *root, float x, float y, float max_x,
-                       float max_y) const {
+glm::vec2 Grid::layout(float x, float y, float max_x, float max_y) const {
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
     interface(x, y, box.w, box.h);
 
-  if (root->children.size() > 0) {
+  if (children.size() > 0) {
     float inner_space;
 
-    if (root->major_axis == Y) {
+    if (major_axis == Y) {
       inner_space = box.h - box.pad_top - box.pad_bottom;
     } else {
       inner_space = box.w - box.pad_left - box.pad_right;
     }
 
-    float gap =
-        std::round(((Grid *)root)->gap.getComputedValue(standardDPI, max_x));
-    float child_size = inner_space / root->children.size();
+    float gap = std::round(this->gap.getComputedValue(standardDPI, max_x));
+    float child_size = inner_space / children.size();
 
     int i = 0;
-    for (Node *child : root->children) {
+    for (Node *child : children) {
       float anchor_x;
       float anchor_y;
       float width_limit;
       float height_limit;
 
-      if (root->major_axis == Y) {
+      if (major_axis == Y) {
         anchor_x = x + box.pad_left;
         anchor_y = std::round(y + box.pad_top + i * child_size);
         width_limit = box.w - box.pad_left - box.pad_right;
@@ -105,7 +101,7 @@ glm::vec2 Grid::layout(Node *root, float x, float y, float max_x,
         height_limit = box.h - box.pad_top - box.pad_bottom;
       }
 
-      child->layout(child, anchor_x, anchor_y, width_limit, height_limit);
+      child->layout(anchor_x, anchor_y, width_limit, height_limit);
 
       i++;
     }

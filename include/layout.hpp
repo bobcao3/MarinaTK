@@ -85,7 +85,7 @@ public:
 
   //! The layout function that recursively traverses the tree and layout boxes.
   /*! This is a O(N) implementation, with simple constrains and deep trees */
-  virtual glm::vec2 layout(Node *root, float x, float y, float max_x,
+  virtual glm::vec2 layout(float x, float y, float max_x,
                            float max_y) const = 0;
 };
 
@@ -96,8 +96,7 @@ public:
       std::vector<Node *> children, layoutCallback interface)
       : Node(size, padding, major_axis, children, interface) {}
 
-  glm::vec2 layout(Node *root, float x, float y, float max_x,
-                   float max_y) const;
+  glm::vec2 layout(float x, float y, float max_x, float max_y) const;
 };
 
 //! Grid layout. Children inside the grid are evenly spaced with a gap.
@@ -110,8 +109,7 @@ public:
        std::vector<Node *> children, layoutCallback interface)
       : Node(size, padding, major_axis, children, interface), gap{gap} {}
 
-  glm::vec2 layout(Node *root, float x, float y, float max_x,
-                   float max_y) const;
+  glm::vec2 layout(float x, float y, float max_x, float max_y) const;
 };
 
 //! Layered layout. Children are layered on top of each other.
@@ -121,8 +119,7 @@ public:
           std::vector<Node *> children, layoutCallback interface)
       : Node(size, padding, major_axis, children, interface) {}
 
-  glm::vec2 layout(Node *root, float x, float y, float max_x,
-                   float max_y) const;
+  glm::vec2 layout(float x, float y, float max_x, float max_y) const;
 };
 
 } // namespace Layout

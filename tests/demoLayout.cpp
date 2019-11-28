@@ -79,7 +79,7 @@ int main() {
 
     box1.size.width.value = sin(time * 0.001) * 200 + 400;
 
-    root.layout(&root, 0, 0, 0, 0);
+    root.layout(0, 0, 0, 0);
 
     r->presentBuffer();
   }
