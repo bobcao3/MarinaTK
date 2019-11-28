@@ -19,6 +19,10 @@
 
 #include "geometry.hpp"
 
+#include <string>
+#include <vector>
+#include <memory>
+
 namespace MTK {
 
     //! An abstract Scene Node.
@@ -34,7 +38,10 @@ namespace MTK {
         //! Get the transformation matrix (3x3 as it's 2D) of this node
         virtual const mat3x3 getTransformation() = 0;
 
-        virtual ~SceneNodeAbstract() = 0;
+        virtual ~SceneNodeAbstract() {};
+
+        //! Get the children of this node
+        virtual std::vector<std::unique_ptr<SceneNodeAbstract>>& getChildren() = 0;
     };
 
     //! An ordinary rectangular scene node with defined bounding box.
@@ -42,6 +49,8 @@ namespace MTK {
     {
     private:
         BBox2D bbox;
+        mat3x3 transformation;
+        std::vector<std::unique_ptr<SceneNodeAbstract>> children;
 
     public:
         //! Get the bounding box of this node
@@ -53,6 +62,9 @@ namespace MTK {
         //! Get the transformation matrix (3x3 as it's 2D) of this node
         const mat3x3 getTransformation();
 
+        //! Get the children of this node
+        std::vector<std::unique_ptr<SceneNodeAbstract>>& getChildren();
+
         SceneNode();
         
         SceneNode(BBox2D& bbox);
@@ -62,6 +74,7 @@ namespace MTK {
     class SceneGraph
     {
     private:
+        SceneNode root;
 
     public:
         SceneGraph();
