@@ -59,27 +59,34 @@ glm::vec2 Grid::layout(Node *root, float x, float y, float max_x,
       inner_space = box.w - box.pad_left - box.pad_right;
     }
 
-    float child_spacing = inner_space / root->children.size();
-    float child_size = child_spacing -
-                       ((Grid *)root)->gap.getComputedValue(standardDPI, max_x);
+    float gap =
+        std::round(((Grid *)root)->gap.getComputedValue(standardDPI, max_x));
+    float child_size = inner_space / root->children.size();
 
+    int i = 0;
     for (Node *child : root->children) {
+      float anchor_x;
+      float anchor_y;
       float width_limit;
       float height_limit;
+
       if (root->major_axis == Y) {
+        anchor_x = x + box.pad_left;
+        anchor_y = std::round(y + box.pad_top + i * child_size);
         width_limit = box.w - box.pad_left - box.pad_right;
-        height_limit = child_size;
+        height_limit =
+            std::round(y + box.pad_top + (i + 1) * child_size) - anchor_y - gap;
       } else {
-        width_limit = child_size;
+        anchor_x = std::round(x + box.pad_left + i * child_size);
+        anchor_y = y + box.pad_top;
+        width_limit = std::round(x + box.pad_left + (i + 1) * child_size) -
+                      anchor_x - gap;
         height_limit = box.h - box.pad_top - box.pad_bottom;
       }
-      child->layout(child, x + box.pad_left, y + box.pad_top, width_limit,
-                    height_limit);
-      if (root->major_axis == Y) {
-        y += child_spacing;
-      } else {
-        x += child_spacing;
-      }
+
+      child->layout(child, anchor_x, anchor_y, width_limit, height_limit);
+
+      i++;
     }
   }
 
