@@ -81,4 +81,14 @@ public:
                    float max_y) const;
 };
 
+class Layered : public Node {
+public:
+  Layered(Extent2 size, Extent4 padding, Axis major_axis,
+          std::vector<Node *> children, LayoutInterface *renderer)
+      : Node(size, padding, major_axis, children, renderer) {}
+
+  glm::vec2 layout(Node *root, float x, float y, float max_x,
+                   float max_y) const;
+};
+
 } // namespace MTK::Layout
