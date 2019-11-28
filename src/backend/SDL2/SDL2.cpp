@@ -73,7 +73,14 @@ void SDL2::clearRect(float x, float y, float width, float height) {
   SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
   fillRect(x, y, width, height);
   fillColor32(curr_fill_color.r, curr_fill_color.g, curr_fill_color.b,
-            curr_fill_color.a);
+              curr_fill_color.a);
+}
+
+void SDL2::clear() {
+  SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
+  SDL_RenderClear(ren);
+  fillColor32(curr_fill_color.r, curr_fill_color.g, curr_fill_color.b,
+              curr_fill_color.a);
 }
 
 void SDL2::presentBuffer() { SDL_RenderPresent(ren); }
@@ -116,6 +123,21 @@ void SDL2::fillColor32(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
   curr_fill_color.b = b;
   curr_fill_color.a = a;
   SDL_SetRenderDrawColor(ren, r, g, b, a);
+}
+
+void SDL2::pollEvents() {
+  SDL_Event event;
+  while (SDL_PollEvent(&event)) {
+    if (event.type == SDL_QUIT) {
+      shouldClose = true;
+    } else {
+      // Do things here
+    }
+  }
+}
+
+bool SDL2::isTerminated() {
+  return shouldClose;
 }
 
 } // namespace MTK::Backend

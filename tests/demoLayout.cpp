@@ -3,6 +3,7 @@
 #include <backend/SDL2.hpp>
 
 #include <iostream>
+#include <chrono>
 
 using namespace MTK;
 
@@ -70,10 +71,23 @@ int main() {
                       {&box0, &box1, &box2},
                       &rd};
 
-  root.layout(&root, 0, 0, 0, 0);
-  r->presentBuffer();
+  auto start = std::chrono::steady_clock::now();
 
-  std::cin.get();
+  while (!r->isTerminated()) {
+    r->clear();
+    r->pollEvents();
+
+    auto end = std::chrono::steady_clock::now();
+    float time =
+        std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+            .count();
+
+    box1.size.width.value = sin(time * 0.001) * 200 + 400;
+
+    root.layout(&root, 0, 0, 0, 0);
+
+    r->presentBuffer();
+  }
 
   return 0;
 }

@@ -6,8 +6,8 @@
 
 struct FC_Font;
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 namespace MTK::Backend {
 
@@ -17,13 +17,15 @@ private:
   SDL_Renderer *ren;
 
   std::unordered_map<size_t, FC_Font *> fonts;
-  FC_Font* curr_font = NULL;
+  FC_Font *curr_font = NULL;
 
   SDL_Color curr_fill_color = {0, 0, 0, 255};
-  
+
   static size_t getFontNameHash(std::string name, int size);
 
   void fillColor32(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+  bool shouldClose = false;
 
 public:
   SDL2();
@@ -32,6 +34,7 @@ public:
   void fillRect(float x, float y, float width, float height);
   void strokeRect(float x, float y, float width, float height);
   void clearRect(float x, float y, float width, float height);
+  void clear();
 
   void presentBuffer();
   void presentRegion(float x, float y, float width, float height);
@@ -40,5 +43,9 @@ public:
   void fillText(const char *str, float x, float y);
 
   void fillColor(float r, float g, float b, float a);
+
+  void pollEvents();
+  bool isTerminated();
 };
-}
+
+} // namespace MTK::Backend
