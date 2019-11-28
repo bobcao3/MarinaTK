@@ -27,6 +27,12 @@ private:
 
   bool shouldClose = false;
 
+  eventCallback key_cb = NULL, pointer_cb = NULL;
+
+  int mouseX = -1, mouseY = -1;
+
+  static int SDLCALL window_events(void* data, SDL_Event* ev);
+
 public:
   SDL2();
   ~SDL2();
@@ -44,8 +50,11 @@ public:
 
   void fillColor(float r, float g, float b, float a);
 
-  void pollEvents();
+  void waitEvents();
   bool isTerminated();
+
+  void setKeyCallback(eventCallback cb);
+  void setPointerCallback(eventCallback cb);
 };
 
 } // namespace MTK::Backend

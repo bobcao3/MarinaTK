@@ -26,13 +26,15 @@ SDL2::SDL2() {
   }
 
   ren = SDL_CreateRenderer(
-      window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+      window, -1, SDL_RENDERER_ACCELERATED);
   if (ren == nullptr) {
     SDL_DestroyWindow(window);
     std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
     SDL_Quit();
     exit(-1);
   }
+
+  SDL_AddEventWatch(window_events, this);
 
   fillColor32(255, 255, 255, 255);
   SDL_RenderClear(ren);
@@ -125,19 +127,41 @@ void SDL2::fillColor32(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
   SDL_SetRenderDrawColor(ren, r, g, b, a);
 }
 
-void SDL2::pollEvents() {
-  SDL_Event event;
-  while (SDL_PollEvent(&event)) {
-    if (event.type == SDL_QUIT) {
-      shouldClose = true;
-    } else {
-      // Do things here
+int SDLCALL SDL2::window_events(void *data, SDL_Event *event) {
+  SDL2 *backend = (SDL2 *)data;
+
+  if (event->type == SDL_QUIT) {
+    backend->shouldClose = true;
+  } else if (event->type == SDL_KEYDOWN) {
+    if (backend->key_cb) {
+      EventKey e = {backend, "SomeKey", DOWN};
+      backend->key_cb(&e);
+    }
+  } else if (event->type == SDL_KEYUP) {
+    if (backend->key_cb) {
+      EventKey e = {backend, "SomeKey", UP};
+      backend->key_cb(&e);
+    }
+  } else if (event->type == SDL_MOUSEMOTION) {
+    if (backend->pointer_cb) {
+      EventPointer e = {backend, "Mouse", HOVER, event->motion.x,
+                        event->motion.y};
+      backend->pointer_cb(&e);
     }
   }
+
+  return 0;
 }
 
-bool SDL2::isTerminated() {
-  return shouldClose;
+void SDL2::waitEvents() {
+  SDL_Event ev;
+  SDL_WaitEvent(&ev);
 }
+
+bool SDL2::isTerminated() { return shouldClose; }
+
+void SDL2::setKeyCallback(eventCallback cb) { key_cb = cb; }
+
+void SDL2::setPointerCallback(eventCallback cb) { pointer_cb = cb; }
 
 } // namespace MTK::Backend

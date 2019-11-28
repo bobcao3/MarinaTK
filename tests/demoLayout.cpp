@@ -75,7 +75,7 @@ int main() {
 
   while (!r->isTerminated()) {
     r->clear();
-    r->pollEvents();
+    r->waitEvents();
 
     auto end = std::chrono::steady_clock::now();
     float time =
