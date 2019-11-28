@@ -1,9 +1,9 @@
+#include <backend/SDL2.hpp>
 #include <layout.hpp>
 #include <mtk.hpp>
-#include <backend/SDL2.hpp>
 
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
 using namespace MTK;
 
@@ -11,7 +11,10 @@ Backend::SDL2 *r;
 
 class LayoutVisualizer : public Layout::LayoutInterface {
 public:
-  void layout(float x, float y, float w, float h) { r->strokeRect(x, y, w, h); }
+  void layout([[maybe_unused]] Layout::Node *node, float x, float y, float w,
+              float h) {
+    r->strokeRect(x, y, w, h);
+  }
 };
 
 int main() {

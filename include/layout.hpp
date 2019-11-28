@@ -29,9 +29,11 @@ struct Extent4 {
   Length left, right, top, bottom;
 };
 
+class Node;
+
 class LayoutInterface {
 public:
-  virtual void layout(float x, float y, float w, float h) = 0;
+  virtual void layout(Node* node, float x, float y, float w, float h) = 0;
   virtual ~LayoutInterface() {}
 };
 
@@ -43,15 +45,15 @@ public:
 
   std::vector<Node *> children;
 
-  LayoutInterface *renderer;
+  LayoutInterface *interface;
 
   ComputedBox getComputedSize(float dpi, float max_x = 0.0,
                               float max_y = 0.0) const;
 
   Node(Extent2 size, Extent4 padding, Axis major_axis,
-       std::vector<Node *> children, LayoutInterface *renderer)
+       std::vector<Node *> children, LayoutInterface *interface)
       : size{size}, padding{padding},
-        major_axis{major_axis}, children{children}, renderer{renderer} {}
+        major_axis{major_axis}, children{children}, interface{interface} {}
 
   virtual ~Node() {}
 
@@ -62,8 +64,8 @@ public:
 class Box : public Node {
 public:
   Box(Extent2 size, Extent4 padding, Axis major_axis,
-      std::vector<Node *> children, LayoutInterface *renderer)
-      : Node(size, padding, major_axis, children, renderer) {}
+      std::vector<Node *> children, LayoutInterface *interface)
+      : Node(size, padding, major_axis, children, interface) {}
 
   glm::vec2 layout(Node *root, float x, float y, float max_x,
                    float max_y) const;
@@ -74,8 +76,8 @@ public:
   Length gap;
 
   Grid(Extent2 size, Extent4 padding, Axis major_axis, Length gap,
-       std::vector<Node *> children, LayoutInterface *renderer)
-      : Node(size, padding, major_axis, children, renderer), gap{gap} {}
+       std::vector<Node *> children, LayoutInterface *interface)
+      : Node(size, padding, major_axis, children, interface), gap{gap} {}
 
   glm::vec2 layout(Node *root, float x, float y, float max_x,
                    float max_y) const;
@@ -84,8 +86,8 @@ public:
 class Layered : public Node {
 public:
   Layered(Extent2 size, Extent4 padding, Axis major_axis,
-          std::vector<Node *> children, LayoutInterface *renderer)
-      : Node(size, padding, major_axis, children, renderer) {}
+          std::vector<Node *> children, LayoutInterface *interface)
+      : Node(size, padding, major_axis, children, interface) {}
 
   glm::vec2 layout(Node *root, float x, float y, float max_x,
                    float max_y) const;

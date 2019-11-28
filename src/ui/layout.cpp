@@ -28,7 +28,8 @@ glm::vec2 Box::layout(Node *root, float x, float y, float max_x,
                       float max_y) const {
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
-  renderer->layout(x, y, box.w, box.h);
+  if (interface)
+    interface->layout((Node *)this, x, y, box.w, box.h);
 
   for (Node *child : root->children) {
     glm::vec2 r = child->layout(child, x + box.pad_left, y + box.pad_top,
@@ -48,7 +49,8 @@ glm::vec2 Layered::layout(Node *root, float x, float y, float max_x,
                           float max_y) const {
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
-  renderer->layout(x, y, box.w, box.h);
+  if (interface)
+    interface->layout((Node *)this, x, y, box.w, box.h);
 
   for (Node *child : root->children) {
     child->layout(child, x + box.pad_left, y + box.pad_top,
@@ -63,7 +65,8 @@ glm::vec2 Grid::layout(Node *root, float x, float y, float max_x,
                        float max_y) const {
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
-  renderer->layout(x, y, box.w, box.h);
+  if (interface)
+    interface->layout((Node *)this, x, y, box.w, box.h);
 
   if (root->children.size() > 0) {
     float inner_space;
