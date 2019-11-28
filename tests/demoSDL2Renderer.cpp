@@ -12,6 +12,15 @@ int main() {
   r->strokeRect(25, 25, 150, 100);
   r->clearRect(100, 75, 50, 50);
 
+  r->font("/usr/share/fonts/truetype/NotoSans-Regular.ttf", 20);
+  r->fillText("Test FONT!", 50, 200);
+
+  r->font("/usr/share/fonts/truetype/NotoSans-Regular.ttf", 30);
+  r->fillText("Test FONT BIG!", 50, 250);
+
+  r->font("/usr/share/fonts/truetype/NotoSans-Regular.ttf", 20);
+  r->fillText("Test FONT cache", 50, 300);
+
   r->presentBuffer();
 
   std::cin.get();

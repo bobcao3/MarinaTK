@@ -2,8 +2,15 @@
 #include <backend/SDL2.hpp>
 
 #include <iostream>
+#include <functional>
+
+#include "SDL_FontCache/SDL_FontCache.h"
 
 namespace MTK::Backend {
+
+size_t SDL2::getFontNameHash(std::string name, int size) {
+  return std::hash<std::string>{}(name) ^ size;
+}
 
 SDL2::SDL2() {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -33,6 +40,10 @@ SDL2::SDL2() {
 }
 
 SDL2::~SDL2() {
+  for (auto f : fonts) {
+    FC_FreeFont(f.second);
+  }
+
   SDL_DestroyWindow(window);
   SDL_Quit();
 }
@@ -73,4 +84,24 @@ void SDL2::presentRegion([[maybe_unused]] float x, [[maybe_unused]] float y,
   presentBuffer();
 }
 
+void SDL2::font(const char *name, int size) {
+  std::string name_s = std::string(name);
+  if (fonts.find(getFontNameHash(name_s, size)) != fonts.end()) {
+    curr_font = fonts[getFontNameHash(name_s, size)];
+  } else {
+    FC_Font *font = FC_CreateFont();
+    FC_LoadFont(font, ren, name, size, FC_MakeColor(0, 0, 0, 255),
+                TTF_STYLE_NORMAL);
+    curr_font = font;
+    fonts.insert({getFontNameHash(name_s, size), font});
+  }
 }
+
+void SDL2::fillText(const char *str, float x, float y) {
+  if (!curr_font)
+    return;
+  
+  FC_Draw(curr_font, ren, x, y, str);
+}
+
+} // namespace MTK::Backend

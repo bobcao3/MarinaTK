@@ -1,4 +1,4 @@
-project('MarinaTK', 'cpp',
+project('MarinaTK', 'cpp', 'c',
   version : '0.0.0',
   license : 'APACHE',
   default_options : ['c_std=c11', 'cpp_std=c++17'])
@@ -20,10 +20,13 @@ else
 endif
 
 # Dependencies
-glm_dep = dependency('glm')
 cunit_dep = dependency('cunit')
+glm_dep = dependency('glm')
 thread_dep = dependency('threads')
-sdl2_dep = dependency('SDL2')
+sdl2_dep = dependency('sdl2')
+sdl2_ttf_dep = dependency('SDL2_ttf')
+
+mtk_dep = [glm_dep, thread_dep, sdl2_ttf_dep, sdl2_dep]
 
 # The Library
 mtk_sources = [
@@ -31,10 +34,11 @@ mtk_sources = [
     'src/sceneGraph/sceneNode.cpp',
     'src/sceneGraph/geometry.cpp',
     'src/backend/SDL2/SDL2.cpp',
+    'src/backend/SDL2/SDL_FontCache/SDL_FontCache.c',
     'src/ui/layout.cpp'
 ]
 incdir = include_directories('include')
-mtk = shared_library('mtk', mtk_sources, dependencies: [glm_dep, thread_dep, sdl2_dep], install: true, include_directories : incdir)
+mtk = shared_library('mtk', mtk_sources, dependencies: mtk_dep, install: true, include_directories : incdir)
 
 pkg_mod.generate(libraries : mtk,
                  version : '0.0',
@@ -52,5 +56,5 @@ sceneGraphTest = executable('sceneGraphTest', 'tests/testSceneGraph.cpp', depend
 test('Scene Graph Test', sceneGraphTest)
 
 # Demo
-demoSDL2Renderer = executable('demoSDL2Renderer', 'tests/demoSDL2Renderer.cpp', dependencies: [glm_dep, thread_dep, sdl2_dep], include_directories : incdir, link_with : mtk)
-demoLayout = executable('demoLayout', 'tests/demoLayout.cpp', dependencies: [glm_dep, thread_dep, sdl2_dep], include_directories : incdir, link_with : mtk)
+demoSDL2Renderer = executable('demoSDL2Renderer', 'tests/demoSDL2Renderer.cpp', dependencies: mtk_dep, include_directories : incdir, link_with : mtk)
+demoLayout = executable('demoLayout', 'tests/demoLayout.cpp', dependencies: mtk_dep, include_directories : incdir, link_with : mtk)

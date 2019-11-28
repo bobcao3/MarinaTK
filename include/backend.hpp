@@ -13,6 +13,9 @@ public:
   virtual void presentBuffer() = 0;
   virtual void presentRegion(float x, float y, float width, float height) = 0;
 
+  virtual void font(const char* name, int size) = 0;
+  virtual void fillText(const char* str, float x, float y) = 0;
+
   virtual ~Backend() {}
 };
 
