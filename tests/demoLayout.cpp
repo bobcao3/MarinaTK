@@ -9,18 +9,10 @@ using namespace MTK;
 
 Backend::SDL2 *r;
 
-class LayoutVisualizer : public Layout::LayoutInterface {
-public:
-  void layout([[maybe_unused]] Layout::Node *node, float x, float y, float w,
-              float h) {
-    r->strokeRect(x, y, w, h);
-  }
-};
+void layout(float x, float y, float w, float h) { r->strokeRect(x, y, w, h); }
 
 int main() {
   r = new Backend::SDL2();
-
-  LayoutVisualizer rd;
 
   Layout::Box box0({{50.0, Layout::Pixel}, {50.0, Layout::Pixel}},
                    {
@@ -29,7 +21,7 @@ int main() {
                        {0.0, Layout::Pixel},
                        {0.0, Layout::Pixel},
                    },
-                   Layout::Y, {}, &rd);
+                   Layout::Y, {}, layout);
 
   Layout::Box box1_0({{100.0, Layout::Percent}, {100.0, Layout::Percent}},
                      {
@@ -38,7 +30,7 @@ int main() {
                          {0.0, Layout::Pixel},
                          {0.0, Layout::Pixel},
                      },
-                     Layout::Y, {}, &rd);
+                     Layout::Y, {}, layout);
 
   Layout::Grid box1 = {{{300.0, Layout::Pixel}, {100.0, Layout::Pixel}},
                        {
@@ -50,7 +42,7 @@ int main() {
                        Layout::X,
                        {5, Layout::Pixel},
                        {&box1_0, &box1_0, &box1_0},
-                       &rd};
+                       layout};
 
   Layout::Box box2 = {{{0.0, Layout::Pixel}, {100.0, Layout::Pixel}},
                       {
@@ -61,7 +53,7 @@ int main() {
                       },
                       Layout::Y,
                       {},
-                      &rd};
+                      layout};
 
   Layout::Box root = {{{800.0, Layout::Pixel}, {600.0, Layout::Pixel}},
                       {
@@ -72,7 +64,7 @@ int main() {
                       },
                       Layout::Y,
                       {&box0, &box1, &box2},
-                      &rd};
+                      layout};
 
   auto start = std::chrono::steady_clock::now();
 
