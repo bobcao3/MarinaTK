@@ -1,8 +1,8 @@
 #include <backend.hpp>
 #include <backend/SDL2.hpp>
 
-#include <iostream>
 #include <functional>
+#include <iostream>
 
 #include "SDL_FontCache/SDL_FontCache.h"
 
@@ -34,9 +34,9 @@ SDL2::SDL2() {
     exit(-1);
   }
 
-  SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
+  fillColor32(255, 255, 255, 255);
   SDL_RenderClear(ren);
-  SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+  fillColor32(0, 0, 0, 255);
 }
 
 SDL2::~SDL2() {
@@ -72,7 +72,8 @@ void SDL2::strokeRect(float x, float y, float width, float height) {
 void SDL2::clearRect(float x, float y, float width, float height) {
   SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
   fillRect(x, y, width, height);
-  SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+  fillColor32(curr_fill_color.r, curr_fill_color.g, curr_fill_color.b,
+            curr_fill_color.a);
 }
 
 void SDL2::presentBuffer() { SDL_RenderPresent(ren); }
@@ -100,8 +101,21 @@ void SDL2::font(const char *name, int size) {
 void SDL2::fillText(const char *str, float x, float y) {
   if (!curr_font)
     return;
-  
+
+  FC_SetDefaultColor(curr_font, curr_fill_color);
   FC_Draw(curr_font, ren, x, y, str);
+}
+
+void SDL2::fillColor(float r, float g, float b, float a) {
+  fillColor32(r * 255, g * 255, b * 255, a * 255);
+}
+
+void SDL2::fillColor32(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+  curr_fill_color.r = r;
+  curr_fill_color.g = g;
+  curr_fill_color.b = b;
+  curr_fill_color.a = a;
+  SDL_SetRenderDrawColor(ren, r, g, b, a);
 }
 
 } // namespace MTK::Backend

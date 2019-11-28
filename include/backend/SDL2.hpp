@@ -13,14 +13,17 @@ namespace MTK::Backend {
 
 class SDL2 : public Backend {
 private:
-  static size_t getFontNameHash(std::string name, int size);
-
-private:
   SDL_Window *window;
   SDL_Renderer *ren;
 
   std::unordered_map<size_t, FC_Font *> fonts;
   FC_Font* curr_font = NULL;
+
+  SDL_Color curr_fill_color = {0, 0, 0, 255};
+  
+  static size_t getFontNameHash(std::string name, int size);
+
+  void fillColor32(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 public:
   SDL2();
@@ -35,6 +38,7 @@ public:
 
   void font(const char *name, int size);
   void fillText(const char *str, float x, float y);
-};
 
+  void fillColor(float r, float g, float b, float a);
+};
 }

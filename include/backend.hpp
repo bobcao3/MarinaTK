@@ -16,6 +16,8 @@ public:
   virtual void font(const char* name, int size) = 0;
   virtual void fillText(const char* str, float x, float y) = 0;
 
+  virtual void fillColor(float r, float g, float b, float a) = 0;
+
   virtual ~Backend() {}
 };
 
