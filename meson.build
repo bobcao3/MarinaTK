@@ -34,7 +34,9 @@ mtk_sources = [
     'src/backend/SDL2/SDL2.cpp',
     'src/backend/SDL2/SDL_FontCache/SDL_FontCache.c',
     'src/ui/layout.cpp',
-    'src/components/window.cpp'
+    'src/components/window.cpp',
+    'src/components/container.cpp',
+    'src/components/grid.cpp',
 ]
 incdir = include_directories('include')
 mtk = shared_library('mtk', mtk_sources, dependencies: mtk_dep, install: true, include_directories : incdir)

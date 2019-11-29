@@ -3,76 +3,43 @@
 using namespace MTK;
 using namespace MTK::Components;
 
-Window::Window(Backend::Backend *b) {
+Window::Window(Backend::Backend *b)
+    : Container(
+          new Layout::Box({{100.0, Layout::Percent}, {100.0, Layout::Percent}},
+                          {
+                              {0.0, Layout::Pixel},
+                              {0.0, Layout::Pixel},
+                              {0.0, Layout::Pixel},
+                              {0.0, Layout::Pixel},
+                          },
+                          Layout::X, {}, NULL)) {
   size = b->getSize();
 
   backend = b;
 
-  layout_node = new Layout::Box({Layout::Length(Layout::standardDPI, size.x),
-                                 Layout::Length(Layout::standardDPI, size.y)},
-                                {
-                                    {0.0, Layout::Pixel},
-                                    {0.0, Layout::Pixel},
-                                    {0.0, Layout::Pixel},
-                                    {0.0, Layout::Pixel},
-                                },
-                                Layout::X, {}, NULL);
-
   auto cb = std::bind(&Window::onPointer, this, std::placeholders::_1);
   backend->setPointerCallback(cb);
+
+  backgroundColor = glm::vec4(1.0);
 }
-
-bool Window::onPointerEvent(Event *ev) { return true; }
-
-bool Window::onKeyboardEvent(Event *ev) { return true; }
-
-Layout::Node *Window::getLayoutNode() { return layout_node; }
-
-Component *Window::getParent() { return nullptr; }
-
-std::vector<Component *> Window::getChildren() {}
-
-void Window::removeChildren(Component *c) {}
 
 void Window::onPointer(Backend::Event *_e) {
   Backend::EventPointer *e = (Backend::EventPointer *)_e;
 
-  if (e->action == Backend::HOVER) {
-    mouseX = e->x;
-    mouseY = e->y;
-  }
+  Layout::Extent2 hit_pos = {Layout::Length(Layout::standardDPI, e->x),
+                             Layout::Length(Layout::standardDPI, e->y)};
+  PointerEvent new_ev = {this, hit_pos, e->action};
+  onPointerEvent(&new_ev);
 }
 
 void Window::run() {
   while (!backend->isTerminated()) {
+    backend->clear();
+
     backend->waitEvents();
 
-    backend->clear();
-    backend->fillColor(0.0, 0.0, 0.0, 1.0);
-    backend->fillRect(50, 50, 100, 50);
-    backend->fillColor(1.0, 0.0, 0.0, 1.0);
-    backend->strokeRect(25, 25, 150, 100);
-    backend->clearRect(100, 75, 50, 50);
-
-    backend->font("/usr/share/fonts/truetype/NotoSans-Regular.ttf", 20);
-    backend->fillText("Test FONT!", 50, 200);
-
-    backend->font("/usr/share/fonts/truetype/NotoSans-Regular.ttf", 30);
-    backend->fillText("Test FONT BIG!", 50, 250);
-
-    backend->fillColor(0.0, 1.0, 1.0, 1.0);
-    backend->font("/usr/share/fonts/truetype/NotoSans-Regular.ttf", 20);
-    backend->fillText("Test FONT cache", 50, 300);
-
-    backend->fillColor(0.2, 1.0, 0.6, 0.5);
-    backend->fillRect(0, mouseY, 800, 1);
-    backend->fillRect(mouseX, 0, 1, 600);
+    layout_node->layout(0, 0, size.x, size.y);
 
     backend->presentBuffer();
   }
-}
-
-Window::~Window() {
-  delete layout_node;
-  delete backend;
 }

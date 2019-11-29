@@ -12,7 +12,7 @@ doxygen_py = join_paths(meson.source_root(), './doc/m.css/documentation/doxygen.
 
 xml_target = custom_target('marina-tool-kit-docs',
                             input: doxyfile_mcss,
-                            output: 'html',
+                            output: 'doc',
                             command: [doxygen_py, doxyfile_mcss],
                             install: true,
                             install_dir: get_option('datadir'))
