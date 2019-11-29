@@ -33,14 +33,18 @@ glm::vec2 Box::layout(float x, float y, float max_x, float max_y) const {
   if (interface)
     interface(x, y, box.w, box.h);
 
+  float wlimit = box.w - box.pad_left - box.pad_right;
+  float hlimit = box.h - box.pad_top - box.pad_bottom;
+
   for (Node *child : children) {
-    glm::vec2 r = child->layout(x + box.pad_left, y + box.pad_top,
-                                box.w - box.pad_left - box.pad_right,
-                                box.h - box.pad_top - box.pad_bottom);
-    if (root->major_axis == Y) {
+    glm::vec2 r =
+        child->layout(x + box.pad_left, y + box.pad_top, wlimit, hlimit);
+    if (major_axis == Y) {
       y += r.y;
+      hlimit -= r.y;
     } else {
       x += r.x;
+      wlimit -= r.x;
     }
   }
 
@@ -78,7 +82,7 @@ glm::vec2 Grid::layout(float x, float y, float max_x, float max_y) const {
     }
 
     float gap = std::round(this->gap.getComputedValue(standardDPI, max_x));
-    float child_size = inner_space / children.size();
+    float child_size = (inner_space + gap) / children.size();
 
     int i = 0;
     for (Node *child : children) {
