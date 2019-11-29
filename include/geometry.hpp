@@ -60,8 +60,13 @@ struct BBox2D {
 
   //! Clip the bounding box with another, return the new one
   BBox2D clip(BBox2D &other);
+
+  bool operator&&(const vec2 other) {
+    return other.x > box.p0.x && other.x < box.p1.x && other.y > box.p0.y &&
+           other.y < box.p1.y;
+  };
 };
 
-}
+} // namespace SceneGraph
 
 } // namespace MTK
