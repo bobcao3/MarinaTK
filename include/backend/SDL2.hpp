@@ -45,8 +45,6 @@ class SDL2 : public Backend {
 
   eventCallback key_cb = NULL, pointer_cb = NULL;
 
-  int mouseX = -1, mouseY = -1;
-
   static int SDLCALL window_events(void *data, SDL_Event *ev);
 
   public:

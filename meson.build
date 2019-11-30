@@ -5,6 +5,7 @@ project('MarinaTK', 'cpp', 'c',
 add_global_arguments('-W', language : 'cpp')
 add_global_arguments('-Wall', language : 'cpp')
 add_global_arguments('-Wextra', language : 'cpp')
+add_global_arguments('-Wno-missing-braces', language : 'cpp')
 # add_global_arguments('-Werror', language : 'cpp')
 
 cc = meson.get_compiler('cpp')
