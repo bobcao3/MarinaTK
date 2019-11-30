@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 Cheng Cao (bobcao3)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "backend/SDL2.hpp"
 #include "components/components.hpp"
 
@@ -7,7 +23,8 @@ using namespace MTK::Layout::Units;
 
 #include <iostream>
 
-int main() {
+int main()
+{
   Backend::SDL2 b;
 
   Window w(&b);
@@ -15,15 +32,15 @@ int main() {
 
   Container black_box;
   black_box.setBackgroundColor(0, 0, 0, 1)
-      .setSize(480_px, 400_px)
-      .setPadding(5_px, 5_px, 5_px, 5_px);
+    .setSize(480_px, 400_px)
+    .setPadding(5_px, 5_px, 5_px, 5_px);
   w.addChildren(&black_box);
 
   Container white_box;
   white_box.setBackgroundColor(1, 1, 1, 1)
-      .setSize(100_percent, 100_percent)
-      .setPadding(5_px, 5_px, 5_px, 5_px)
-      .setMajorAxis(Layout::Y);
+    .setSize(100_percent, 100_percent)
+    .setPadding(5_px, 5_px, 5_px, 5_px)
+    .setMajorAxis(Layout::Y);
   black_box.addChildren(&white_box);
 
   Container top_graphs;
@@ -32,8 +49,8 @@ int main() {
 
   Container black_box_L;
   black_box_L.setBackgroundColor(0, 0, 0, 1)
-      .setSize(70_px, 100_percent)
-      .setPadding(5_px, 5_px, 5_px, 5_px);
+    .setSize(70_px, 100_percent)
+    .setPadding(5_px, 5_px, 5_px, 5_px);
   top_graphs.addChildren(&black_box_L);
 
   Container red_box_L;
@@ -45,7 +62,8 @@ int main() {
   top_graphs.addChildren(&top_gap);
 
   Container black_box_R;
-  black_box_R.setBackgroundColor(0, 0, 0, 1).setPadding(10_px, 10_px, 10_px, 10_px);
+  black_box_R.setBackgroundColor(0, 0, 0, 1)
+    .setPadding(10_px, 10_px, 10_px, 10_px);
   top_graphs.addChildren(&black_box_R);
 
   Container white_box_R;

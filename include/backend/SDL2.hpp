@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 Cheng Cao (bobcao3)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #pragma once
 
 #include <backend.hpp>
@@ -9,17 +25,17 @@ struct FC_Font;
 #include <string>
 #include <unordered_map>
 
-namespace MTK::Backend {
-
+namespace MTK::Backend
+{
 class SDL2 : public Backend {
-private:
+  private:
   SDL_Window *window;
   SDL_Renderer *ren;
 
   std::unordered_map<size_t, FC_Font *> fonts;
   FC_Font *curr_font = NULL;
 
-  SDL_Color curr_fill_color = {0, 0, 0, 255};
+  SDL_Color curr_fill_color = { 0, 0, 0, 255 };
 
   static size_t getFontNameHash(std::string name, int size);
 
@@ -31,9 +47,9 @@ private:
 
   int mouseX = -1, mouseY = -1;
 
-  static int SDLCALL window_events(void* data, SDL_Event* ev);
+  static int SDLCALL window_events(void *data, SDL_Event *ev);
 
-public:
+  public:
   SDL2();
   ~SDL2();
 

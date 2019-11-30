@@ -1,14 +1,30 @@
+/*
+ * Copyright 2019 Cheng Cao (bobcao3)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #pragma once
 
 #include <functional>
 #include <glm/glm.hpp>
 #include <vector>
 
-namespace MTK {
-
+namespace MTK
+{
 //! Contains Layout functionality and abstractions
-namespace Layout {
-
+namespace Layout
+{
 const float standardDPI = 96.0f;
 
 //! Enum for device native / independent units
@@ -32,22 +48,26 @@ struct Length {
   static Length fromNative(float dpi, float value);
 };
 
-namespace Units {
-
-constexpr Length operator"" _px(long double v) {
-  return Length{(float)v, Pixel};
+namespace Units
+{
+constexpr Length operator"" _px(long double v)
+{
+  return Length{ (float)v, Pixel };
 }
 
-constexpr Length operator"" _px(unsigned long long v) {
-  return Length{(float)v, Pixel};
+constexpr Length operator"" _px(unsigned long long v)
+{
+  return Length{ (float)v, Pixel };
 }
 
-constexpr Length operator"" _percent(long double v) {
-  return Length{(float)v, Percent};
+constexpr Length operator"" _percent(long double v)
+{
+  return Length{ (float)v, Percent };
 }
 
-constexpr Length operator"" _percent(unsigned long long v) {
-  return Length{(float)v, Percent};
+constexpr Length operator"" _percent(unsigned long long v)
+{
+  return Length{ (float)v, Percent };
 }
 
 } // namespace Units
@@ -77,7 +97,7 @@ typedef std::function<void(float, float, float, float)> layoutCallback;
 
 //! Base class for a Layout Tree Node
 class Node {
-public:
+  public:
   //! Box size of this node
   Extent2 size;
   //! Box padding of this node
@@ -97,10 +117,17 @@ public:
 
   Node(Extent2 size, Extent4 padding, Axis major_axis,
        std::vector<Node *> children, layoutCallback interface)
-      : size{size}, padding{padding},
-        major_axis{major_axis}, children{children}, interface{interface} {}
+    : size{ size }
+    , padding{ padding }
+    , major_axis{ major_axis }
+    , children{ children }
+    , interface{ interface }
+  {
+  }
 
-  virtual ~Node() {}
+  virtual ~Node()
+  {
+  }
 
   //! The layout function that recursively traverses the tree and layout boxes.
   /*! This is a O(N) implementation, with simple constrains and deep trees */
@@ -110,33 +137,40 @@ public:
 
 //! Box layout. Children inside the box lays side by side on major axis.
 class Box : public Node {
-public:
+  public:
   Box(Extent2 size, Extent4 padding, Axis major_axis,
       std::vector<Node *> children, layoutCallback interface)
-      : Node(size, padding, major_axis, children, interface) {}
+    : Node(size, padding, major_axis, children, interface)
+  {
+  }
 
   glm::vec2 layout(float x, float y, float max_x, float max_y) const;
 };
 
 //! Grid layout. Children inside the grid are evenly spaced with a gap.
 class Grid : public Node {
-public:
+  public:
   //! The size of the gap
   Length gap;
 
   Grid(Extent2 size, Extent4 padding, Axis major_axis, Length gap,
        std::vector<Node *> children, layoutCallback interface)
-      : Node(size, padding, major_axis, children, interface), gap{gap} {}
+    : Node(size, padding, major_axis, children, interface)
+    , gap{ gap }
+  {
+  }
 
   glm::vec2 layout(float x, float y, float max_x, float max_y) const;
 };
 
 //! Layered layout. Children are layered on top of each other.
 class Layered : public Node {
-public:
+  public:
   Layered(Extent2 size, Extent4 padding, Axis major_axis,
           std::vector<Node *> children, layoutCallback interface)
-      : Node(size, padding, major_axis, children, interface) {}
+    : Node(size, padding, major_axis, children, interface)
+  {
+  }
 
   glm::vec2 layout(float x, float y, float max_x, float max_y) const;
 };

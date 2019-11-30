@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 Cheng Cao (bobcao3)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <backend/SDL2.hpp>
 #include <mtk.hpp>
 
@@ -11,7 +27,8 @@ using namespace MTK;
 int mouseX, mouseY;
 bool hasEvents = true;
 
-void onPointer(Backend::Event *_e) {
+void onPointer(Backend::Event *_e)
+{
   Backend::EventPointer *e = (Backend::EventPointer *)_e;
 
   if (e->action == Backend::HOVER) {
@@ -22,7 +39,8 @@ void onPointer(Backend::Event *_e) {
 
 using namespace std::chrono_literals;
 
-int main() {
+int main()
+{
   Backend::SDL2 *r = new Backend::SDL2();
 
   r->setPointerCallback(&onPointer);

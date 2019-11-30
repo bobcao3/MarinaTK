@@ -1,8 +1,25 @@
+/*
+ * Copyright 2019 Cheng Cao (bobcao3)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "layout.hpp"
 
-namespace MTK::Layout {
-
-float Length::getComputedValue(float dpi, float max) const {
+namespace MTK::Layout
+{
+float Length::getComputedValue(float dpi, float max) const
+{
   if (unit == NativePixel)
     return value;
   if (unit == Pixel)
@@ -13,20 +30,23 @@ float Length::getComputedValue(float dpi, float max) const {
   return 0.0;
 }
 
-Length Length::fromNative(float dpi, float value) {
-  return {value / dpi * standardDPI, Pixel};
+Length Length::fromNative(float dpi, float value)
+{
+  return { value / dpi * standardDPI, Pixel };
 }
 
-ComputedBox Node::getComputedSize(float dpi, float max_x, float max_y) const {
-  return {size.width.getComputedValue(dpi, max_x),
-          size.height.getComputedValue(dpi, max_y),
-          padding.left.getComputedValue(dpi, max_x),
-          padding.right.getComputedValue(dpi, max_x),
-          padding.top.getComputedValue(dpi, max_y),
-          padding.bottom.getComputedValue(dpi, max_y)};
+ComputedBox Node::getComputedSize(float dpi, float max_x, float max_y) const
+{
+  return { size.width.getComputedValue(dpi, max_x),
+           size.height.getComputedValue(dpi, max_y),
+           padding.left.getComputedValue(dpi, max_x),
+           padding.right.getComputedValue(dpi, max_x),
+           padding.top.getComputedValue(dpi, max_y),
+           padding.bottom.getComputedValue(dpi, max_y) };
 }
 
-glm::vec2 Box::layout(float x, float y, float max_x, float max_y) const {
+glm::vec2 Box::layout(float x, float y, float max_x, float max_y) const
+{
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
@@ -37,7 +57,7 @@ glm::vec2 Box::layout(float x, float y, float max_x, float max_y) const {
 
   for (Node *child : children) {
     glm::vec2 r =
-        child->layout(x + box.pad_left, y + box.pad_top, wlimit, hlimit);
+      child->layout(x + box.pad_left, y + box.pad_top, wlimit, hlimit);
     if (major_axis == Y) {
       y += r.y;
       hlimit -= r.y;
@@ -50,7 +70,8 @@ glm::vec2 Box::layout(float x, float y, float max_x, float max_y) const {
   return glm::vec2(box.w, box.h);
 }
 
-glm::vec2 Layered::layout(float x, float y, float max_x, float max_y) const {
+glm::vec2 Layered::layout(float x, float y, float max_x, float max_y) const
+{
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
@@ -65,7 +86,8 @@ glm::vec2 Layered::layout(float x, float y, float max_x, float max_y) const {
   return glm::vec2(box.w, box.h);
 }
 
-glm::vec2 Grid::layout(float x, float y, float max_x, float max_y) const {
+glm::vec2 Grid::layout(float x, float y, float max_x, float max_y) const
+{
   ComputedBox box = getComputedSize(standardDPI, max_x, max_y);
 
   if (interface)
@@ -95,12 +117,12 @@ glm::vec2 Grid::layout(float x, float y, float max_x, float max_y) const {
         anchor_y = std::round(y + box.pad_top + i * child_size);
         width_limit = box.w - box.pad_left - box.pad_right;
         height_limit =
-            std::round(y + box.pad_top + (i + 1) * child_size) - anchor_y - gap;
+          std::round(y + box.pad_top + (i + 1) * child_size) - anchor_y - gap;
       } else {
         anchor_x = std::round(x + box.pad_left + i * child_size);
         anchor_y = y + box.pad_top;
-        width_limit = std::round(x + box.pad_left + (i + 1) * child_size) -
-                      anchor_x - gap;
+        width_limit =
+          std::round(x + box.pad_left + (i + 1) * child_size) - anchor_x - gap;
         height_limit = box.h - box.pad_top - box.pad_bottom;
       }
 

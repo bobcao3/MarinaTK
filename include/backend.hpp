@@ -1,14 +1,30 @@
+/*
+ * Copyright 2019 Cheng Cao (bobcao3)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #pragma once
 
 #include "geometry.hpp"
 
 #include <functional>
 
-namespace MTK {
-
+namespace MTK
+{
 //! Contains backend abstrations.
-namespace Backend {
-
+namespace Backend
+{
 //! Backend Event Base Class
 struct Event {
   //! Target of this event.
@@ -17,11 +33,7 @@ struct Event {
 };
 
 //! Enum for Button (mouse, keyboard, touch, etc.) Actions
-enum ButtonAction {
-  DOWN,
-  UP,
-  HOVER
-};
+enum ButtonAction { DOWN, UP, HOVER };
 
 //! Backend Keyboard Event Class
 struct EventKey : public Event {
@@ -42,7 +54,7 @@ struct EventPointer : public Event {
 };
 
 //! Backend Event Callback Type
-typedef std::function<void(Event*)> eventCallback;
+typedef std::function<void(Event *)> eventCallback;
 
 //! Platform Backend Abstraction
 /*! Each instance represents a native platform "window" or "view", with its
@@ -50,7 +62,7 @@ typedef std::function<void(Event*)> eventCallback;
  *  The graphics API is similar to HTML5 Canvas API.
  */
 class Backend {
-public:
+  public:
   //! Get the size of the window
   virtual glm::vec2 getSize() = 0;
 
@@ -91,9 +103,11 @@ public:
   //! Set the pointer event callback
   virtual void setPointerCallback(eventCallback cb) = 0;
 
-  virtual ~Backend() {}
+  virtual ~Backend()
+  {
+  }
 };
 
-} // namespace MTK::Backend
+} // namespace Backend
 
-}
+} // namespace MTK
