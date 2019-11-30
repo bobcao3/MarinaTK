@@ -26,8 +26,9 @@ Window::Window(Backend::Backend *b)
 void Window::onPointer(Backend::Event *_e) {
   Backend::EventPointer *e = (Backend::EventPointer *)_e;
 
-  Layout::Extent2 hit_pos = {Layout::Length(Layout::standardDPI, e->x),
-                             Layout::Length(Layout::standardDPI, e->y)};
+  Layout::Extent2 hit_pos = {
+      Layout::Length::fromNative(Layout::standardDPI, e->x),
+      Layout::Length::fromNative(Layout::standardDPI, e->y)};
   PointerEvent new_ev = {this, hit_pos, e->action};
   onPointerEvent(&new_ev);
 }

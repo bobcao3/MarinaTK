@@ -13,9 +13,8 @@ float Length::getComputedValue(float dpi, float max) const {
   return 0.0;
 }
 
-Length::Length(float dpi, float value) {
-  this->value = value / dpi * standardDPI;
-  this->unit = Pixel;
+Length Length::fromNative(float dpi, float value) {
+  return {value / dpi * standardDPI, Pixel};
 }
 
 ComputedBox Node::getComputedSize(float dpi, float max_x, float max_y) const {

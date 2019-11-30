@@ -29,9 +29,28 @@ struct Length {
   float getComputedValue(float dpi, float max = 0.0) const;
 
   //! Construct a length from native pixel length
-  Length(float value, Unit unit) : value{value}, unit{unit} {};
-  Length(float dpi, float value);
+  static Length fromNative(float dpi, float value);
 };
+
+namespace Units {
+
+constexpr Length operator"" _px(long double v) {
+  return Length{(float)v, Pixel};
+}
+
+constexpr Length operator"" _px(unsigned long long v) {
+  return Length{(float)v, Pixel};
+}
+
+constexpr Length operator"" _percent(long double v) {
+  return Length{(float)v, Percent};
+}
+
+constexpr Length operator"" _percent(unsigned long long v) {
+  return Length{(float)v, Percent};
+}
+
+} // namespace Units
 
 //! Strut to store computed Box information
 struct ComputedBox {

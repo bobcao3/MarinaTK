@@ -17,10 +17,10 @@ private:
 public:
   Layout::Node *layout_node;
 
-  glm::vec4 backgroundColor;
+  glm::vec4 backgroundColor = glm::vec4(0.0);
 
   Container();
-  Container(Layout::Node* n);
+  Container(Layout::Node *n);
 
   bool onPointerEvent(Event *ev);
   bool onKeyboardEvent(Event *ev);
@@ -28,12 +28,22 @@ public:
   void setPointerCustomCallback(const eventCallback cb);
   void removePointerCustomCallback();
 
+  // Getters
   Layout::Node *getLayoutNode();
-  void setParent(Component *c);
   Component *getParent();
   std::vector<Component *> getChildren();
-  void addChildren(Component *c);
-  void removeChildren(Component *c);
+
+  // Setters
+  Component &setParent(Component *c);
+  Component &addChildren(Component *c);
+  Component &removeChildren(Component *c);
+
+  Container &setSize(Layout::Length x, Layout::Length y);
+  Container &setPadding(Layout::Length left, Layout::Length right,
+                        Layout::Length top, Layout::Length bottom);
+  Container &setBackgroundColor(glm::vec4 color);
+  Container &setBackgroundColor(float r, float g, float b, float a);
+  Container &setMajorAxis(Layout::Axis a);
 
   ~Container();
 };

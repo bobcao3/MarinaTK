@@ -38,8 +38,8 @@ bool Container::onPointerEvent(Event *ev) {
     if (child->bbox && p) {
       glm::vec2 p_in_child = p - child->bbox.box.p0;
       Layout::Extent2 hit_pos = {
-          Layout::Length(Layout::standardDPI, p_in_child.x),
-          Layout::Length(Layout::standardDPI, p_in_child.y)};
+          Layout::Length::fromNative(Layout::standardDPI, p_in_child.x),
+          Layout::Length::fromNative(Layout::standardDPI, p_in_child.y)};
       PointerEvent new_ev = {child, hit_pos, event->action};
       propogate = propogate && child->onPointerEvent(&new_ev);
     }
@@ -56,7 +56,7 @@ bool Container::onPointerEvent(Event *ev) {
   return propogate;
 }
 
-bool Container::onKeyboardEvent(Event *ev) { return true; }
+bool Container::onKeyboardEvent([[maybe_unused]] Event *ev) { return true; }
 
 void Container::setPointerCustomCallback(const eventCallback cb) {
   pointer_cb = cb;
@@ -64,22 +64,60 @@ void Container::setPointerCustomCallback(const eventCallback cb) {
 
 void Container::removePointerCustomCallback() { pointer_cb = nullptr; }
 
+// Getters
 Layout::Node *Container::getLayoutNode() { return layout_node; }
-
-void Container::setParent(Component *c) { parent = c; }
 
 Component *Container::getParent() { return parent; }
 
 std::vector<Component *> Container::getChildren() { return children; }
 
-void Container::addChildren(Component *c) {
+// Setters
+Component &Container::setParent(Component *c) {
+  parent = c;
+  return *this;
+}
+
+Component &Container::addChildren(Component *c) {
   children.push_back(c);
   layout_node->children.push_back(c->getLayoutNode());
 
   c->setParent(this);
   c->backend = backend;
+
+  return *this;
 }
 
-void Container::removeChildren(Component *c) {}
+Component &Container::removeChildren([[maybe_unused]]Component *c) { return *this; }
 
+Container &Container::setSize(Layout::Length x, Layout::Length y) {
+  layout_node->size = {x, y};
+
+  return *this;
+}
+
+Container &Container::setPadding(Layout::Length left, Layout::Length right,
+                                 Layout::Length top, Layout::Length bottom) {
+  layout_node->padding = {left, right, top, bottom};
+
+  return *this;
+}
+
+Container &Container::setBackgroundColor(glm::vec4 color) {
+  backgroundColor = color;
+
+  return *this;
+}
+
+Container &Container::setBackgroundColor(float r, float g, float b, float a) {
+  backgroundColor = {r, g, b, a};
+
+  return *this;
+}
+
+Container &Container::setMajorAxis(Layout::Axis a) {
+  layout_node->major_axis = a;
+  return *this;
+}
+
+// Destructor
 Container::~Container() { delete layout_node; }

@@ -58,10 +58,11 @@ int main() {
     auto hover = new Components::Container();
     hover->layout_node->size = {{100, Layout::Percent}, {100, Layout::Percent}};
     hover->backgroundColor = glm::vec4(1.0, 0.0, 0.0, 1.0);
-    hover->setPointerCustomCallback([hover](Components::Event *ev) {
-      hover->backgroundColor = glm::vec4(0.0, 1.0, 0.0, 1.0);
-      return true;
-    });
+    hover->setPointerCustomCallback(
+        [hover]([[maybe_unused]] Components::Event *ev) {
+          hover->backgroundColor = glm::vec4(0.0, 1.0, 0.0, 1.0);
+          return true;
+        });
     verticle_grid.addChildren(hover);
   }
 

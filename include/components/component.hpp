@@ -20,7 +20,7 @@ struct PointerEvent : public Event {
   Backend::ButtonAction action;
 };
 
-typedef std::function<bool(Event*)> eventCallback;
+typedef std::function<bool(Event *)> eventCallback;
 
 class Component {
 public:
@@ -34,12 +34,15 @@ public:
   virtual void setPointerCustomCallback(eventCallback e) = 0;
   virtual void removePointerCustomCallback() = 0;
 
+  // Getters
   virtual Layout::Node *getLayoutNode() = 0;
-  virtual void setParent(Component *c) = 0;
   virtual Component *getParent() = 0;
   virtual std::vector<Component *> getChildren() = 0;
-  virtual void addChildren(Component *c) = 0;
-  virtual void removeChildren(Component *c) = 0;
+
+  // Setters
+  virtual Component &setParent(Component *c) = 0;
+  virtual Component &addChildren(Component *c) = 0;
+  virtual Component &removeChildren(Component *c) = 0;
 
   virtual ~Component() {}
 };

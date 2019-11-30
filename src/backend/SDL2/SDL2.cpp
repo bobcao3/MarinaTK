@@ -25,14 +25,15 @@ SDL2::SDL2() {
     exit(-1);
   }
 
-  ren = SDL_CreateRenderer(
-      window, -1, SDL_RENDERER_ACCELERATED);
+  ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   if (ren == nullptr) {
     SDL_DestroyWindow(window);
     std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
     SDL_Quit();
     exit(-1);
   }
+
+  SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_BLEND);
 
   SDL_AddEventWatch(window_events, this);
 
