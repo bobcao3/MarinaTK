@@ -7,6 +7,11 @@ add_global_arguments('-Wall', language : 'cpp')
 add_global_arguments('-Wextra', language : 'cpp')
 # add_global_arguments('-Werror', language : 'cpp')
 
+cc = meson.get_compiler('cpp')
+if cc.get_id() != 'clang'
+  warning('This project should use the Clang compiler.')
+endif
+
 pkg_mod = import('pkgconfig')
 doxygen = find_program('doxygen', required : false)
 
