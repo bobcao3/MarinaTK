@@ -27,6 +27,8 @@ struct FC_Font;
 
 namespace MTK::Backend
 {
+
+//! The SDL2 backend with SDL_Renderer and SDL2_ttf
 class SDL2 : public Backend {
   private:
   SDL_Window *window;

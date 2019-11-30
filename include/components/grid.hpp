@@ -22,10 +22,15 @@ namespace MTK
 {
 namespace Components
 {
+
+//! Container component with Grid layout
 class Grid : public Container {
   public:
   Grid();
 
+  //! Set the gap of the grid
+  /*! This function call and all other setters are chainable for more user
+   *  friendly syntax. */
   void setGap(Layout::Length l);
 };
 

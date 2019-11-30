@@ -22,6 +22,8 @@ namespace MTK
 {
 namespace Components
 {
+
+//! A window component backed by a user-specified backend
 class Window : public Container {
   private:
   glm::vec2 size;
@@ -29,6 +31,7 @@ class Window : public Container {
   void onPointer(Backend::Event *_e);
 
   public:
+  //! Construtor. Takes a pointer to a _already created_ instance of backend.
   Window(Backend::Backend *b);
 
   void run();

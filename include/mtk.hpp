@@ -15,6 +15,10 @@
  */
 
 /*!
+ * \file mtk.hpp
+ *
+ * The aggregated header for MarinaTK.
+ *
  * \mainpage The Marina Tool Kit - Scene Graph Library
  *
  * \section intro Introduction
@@ -29,6 +33,8 @@
 
 #include "geometry.hpp"
 #include "backend.hpp"
+#include "layout.hpp"
+#include "components/components.hpp"
 
 //! The namespace for the toolkit.
 namespace MTK

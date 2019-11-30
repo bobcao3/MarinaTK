@@ -48,23 +48,29 @@ struct Length {
   static Length fromNative(float dpi, float value);
 };
 
+//! Contains custom literal operators for length units
 namespace Units
 {
+
+//! Length with Pixel (device-independent) as unit
 constexpr Length operator"" _px(long double v)
 {
   return Length{ (float)v, Pixel };
 }
 
+//! Length with Pixel (device-independent) as unit
 constexpr Length operator"" _px(unsigned long long v)
 {
   return Length{ (float)v, Pixel };
 }
 
+//! Length with Percent (percent of parent / constraint) as unit
 constexpr Length operator"" _percent(long double v)
 {
   return Length{ (float)v, Percent };
 }
 
+//! Length with Percent (percent of parent / constraint) as unit
 constexpr Length operator"" _percent(unsigned long long v)
 {
   return Length{ (float)v, Percent };
@@ -74,10 +80,18 @@ constexpr Length operator"" _percent(unsigned long long v)
 
 //! Strut to store computed Box information
 struct ComputedBox {
-  //! Width & height in device native pixels
-  float w, h;
-  //! Size of padding in device native pixels
-  float pad_left, pad_right, pad_top, pad_bottom;
+  //! Width in device native pixels
+  float w;
+  //! Height in device native pixels
+  float h;
+  //! Size of left padding in device native pixels
+  float pad_left;
+  //! Size of right padding in device native pixels
+  float pad_right;
+  //! Size of top padding in device native pixels
+  float pad_top;
+  //! Size of bottom padding in device native pixels
+  float pad_bottom;
 };
 
 //! Struct to store vector with 2 length

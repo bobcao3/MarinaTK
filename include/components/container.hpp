@@ -22,6 +22,8 @@ namespace MTK
 {
 namespace Components
 {
+
+//! Container component. Base component of MarinaTK.
 class Container : public Component {
   private:
   std::vector<Component *> children;
@@ -54,11 +56,26 @@ class Container : public Component {
   Component &addChildren(Component *c);
   Component &removeChildren(Component *c);
 
+  //! Set the size of the container
+  /*! This function call and all other setters are chainable for more user
+   *  friendly syntax. */
   Container &setSize(Layout::Length x, Layout::Length y);
+  //! Set the size of the padding
+  /*! This function call and all other setters are chainable for more user
+   *  friendly syntax. */
   Container &setPadding(Layout::Length left, Layout::Length right,
                         Layout::Length top, Layout::Length bottom);
+  //! Set the background color using a vector
+  /*! This function call and all other setters are chainable for more user
+   *  friendly syntax. */
   Container &setBackgroundColor(glm::vec4 color);
+  //! Set the background color using seperate RGBA values
+  /*! This function call and all other setters are chainable for more user
+   *  friendly syntax. */
   Container &setBackgroundColor(float r, float g, float b, float a);
+  //! Set the major axis (layout axis) for the component
+  /*! This function call and all other setters are chainable for more user
+   *  friendly syntax. */
   Container &setMajorAxis(Layout::Axis a);
 
   ~Container();
