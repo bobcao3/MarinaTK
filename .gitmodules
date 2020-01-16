@@ -1,0 +1,3 @@
+[submodule "deps/glm-aabb"]
+	path = deps/glm-aabb
+	url = https://github.com/rokuz/glm-aabb
