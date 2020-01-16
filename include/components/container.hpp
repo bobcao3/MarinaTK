@@ -22,18 +22,18 @@ namespace MTK
 {
 namespace Components
 {
-
 //! Container component. Base component of MarinaTK.
-class Container : public Component {
+class Container : public Component,
+                  public std::enable_shared_from_this<Container> {
   private:
-  std::vector<Component *> children;
+  std::vector<std::shared_ptr<Component>> children;
 
-  Component *parent = nullptr;
+  std::weak_ptr<Component> parent;
 
   eventCallback pointer_cb;
 
   public:
-  Layout::Node *layout_node;
+  Layout::Node *layout_node = nullptr;
 
   glm::vec4 backgroundColor = glm::vec4(0.0);
 
@@ -48,13 +48,13 @@ class Container : public Component {
 
   // Getters
   Layout::Node *getLayoutNode();
-  Component *getParent();
-  std::vector<Component *> getChildren();
+  std::weak_ptr<Component> getParent();
+  std::vector<std::shared_ptr<Component>> getChildren();
 
   // Setters
-  Component &setParent(Component *c);
-  Component &addChildren(Component *c);
-  Component &removeChildren(Component *c);
+  Component &setParent(std::weak_ptr<Component> c);
+  Component &addChildren(std::shared_ptr<Component> c);
+  Component &removeChildren(std::shared_ptr<Component> c);
 
   //! Set the size of the container
   /*! This function call and all other setters are chainable for more user

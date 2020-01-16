@@ -42,6 +42,7 @@ mtk_sources = [
     'src/ui/layout.cpp',
     'src/components/window.cpp',
     'src/components/container.cpp',
+    'src/components/text.cpp',
     'src/components/grid.cpp',
 ]
 incdir = include_directories('include')

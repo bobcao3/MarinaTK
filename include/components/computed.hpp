@@ -17,7 +17,25 @@
 #pragma once
 
 #include "component.hpp"
-#include "container.hpp"
-#include "grid.hpp"
-#include "window.hpp"
-#include "text.hpp"
+#include "geometry.hpp"
+
+#include <functional>
+#include <memory>
+
+namespace MTK
+{
+namespace Components
+{
+//! Container component with Grid layout
+class Computed {
+  public:
+  SceneGraph::BBox2D bbox;
+
+  std::weak_ptr<Component> component;
+
+  std::function<void(Component*, float, float, float, float)> renderCall;
+};
+
+} // namespace Components
+
+} // namespace MTK

@@ -16,8 +16,31 @@
 
 #pragma once
 
-#include "component.hpp"
 #include "container.hpp"
-#include "grid.hpp"
-#include "window.hpp"
-#include "text.hpp"
+
+namespace MTK
+{
+namespace Components
+{
+//! A window component backed by a user-specified backend
+class Text : public Container {
+  private:
+  std::string fontface;
+  int font_size;
+  glm::vec4 text_color;
+
+  std::string label;
+
+  public:
+  //! Construtor. Takes a pointer to a _already created_ instance of backend.
+  Text();
+
+  Text &setText(std::string t);
+  Text &setTextColor(glm::vec4 color);
+  Text &setFont(std::string f);
+  Text &setFontSize(MTK::Layout::Length size);
+};
+
+} // namespace Components
+
+} // namespace MTK

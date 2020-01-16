@@ -62,7 +62,7 @@ bool Container::onPointerEvent(Event *ev)
         Layout::Length::fromNative(Layout::standardDPI, p_in_child.x),
         Layout::Length::fromNative(Layout::standardDPI, p_in_child.y)
       };
-      PointerEvent new_ev = { child, hit_pos, event->action };
+      PointerEvent new_ev = { child.get(), hit_pos, event->action };
       propogate = propogate && child->onPointerEvent(&new_ev);
     }
   }
@@ -99,36 +99,37 @@ Layout::Node *Container::getLayoutNode()
   return layout_node;
 }
 
-Component *Container::getParent()
+std::weak_ptr<Component> Container::getParent()
 {
   return parent;
 }
 
-std::vector<Component *> Container::getChildren()
+std::vector<std::shared_ptr<Component>> Container::getChildren()
 {
   return children;
 }
 
 // Setters
-Component &Container::setParent(Component *c)
+Component &Container::setParent(std::weak_ptr<Component> c)
 {
   parent = c;
   return *this;
 }
 
-Component &Container::addChildren(Component *c)
+Component &Container::addChildren(std::shared_ptr<Component> c)
 {
   children.push_back(c);
   layout_node->children.push_back(c->getLayoutNode());
 
-  c->setParent(this);
+  c->setParent(weak_from_this());
   c->backend = backend;
 
   return *this;
 }
 
-Component &Container::removeChildren([[maybe_unused]] Component *c)
+Component &Container::removeChildren(std::shared_ptr<Component> c)
 {
+  children.erase(std::find(children.begin(), children.end(), c));
   return *this;
 }
 
@@ -170,5 +171,8 @@ Container &Container::setMajorAxis(Layout::Axis a)
 // Destructor
 Container::~Container()
 {
-  delete layout_node;
+  if (layout_node) {
+    delete layout_node;
+    layout_node = nullptr;
+  }
 }

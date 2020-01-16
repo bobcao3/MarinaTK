@@ -21,6 +21,7 @@
 #include "layout.hpp"
 
 #include <functional>
+#include <memory>
 
 namespace MTK
 {
@@ -76,9 +77,9 @@ class Component {
   //! Get the layout node of this component.
   virtual Layout::Node *getLayoutNode() = 0;
   //! Get the parent component.
-  virtual Component *getParent() = 0;
+  virtual std::weak_ptr<Component> getParent() = 0;
   //! Get the list of children as a vector of components
-  virtual std::vector<Component *> getChildren() = 0;
+  virtual std::vector<std::shared_ptr<Component>> getChildren() = 0;
 
   // Setters
   //! Set the parent of the component.
@@ -86,16 +87,16 @@ class Component {
    *  friendly syntax.
    *  This function DOES NOT remove the component from the current parent's
    *  children list, so use it with caution */
-  virtual Component &setParent(Component *c) = 0;
+  virtual Component &setParent(std::weak_ptr<Component> c) = 0;
   //! Add a children to this component.
   /*! This function call and all other setters are chainable for more user
    *  friendly syntax.
    *  This function will call children's `setParent` method. */
-  virtual Component &addChildren(Component *c) = 0;
+  virtual Component &addChildren(std::shared_ptr<Component> c) = 0;
   //! Remove a children from this component
   /*! This function call and all other setters are chainable for more user
    *  friendly syntax. */
-  virtual Component &removeChildren(Component *c) = 0;
+  virtual Component &removeChildren(std::shared_ptr<Component> c) = 0;
 
   virtual ~Component()
   {
